@@ -17,6 +17,16 @@ if(NOT ITOM_SDK_DIR)
     message(SEND_ERROR "ITOM_SDK_DIR is invalid. Provide itom SDK directory path first")
 endif()
 
+set(ITOM_3RDPARTYFOLDER CACHE PATH 
+    "Path to the AIO 3rdParty Folder, containing cmake/itom_3rdParty.cmake")
+if(ITOM_3RDPARTYFOLDER)
+    include(${ITOM_3RDPARTYFOLDER}/cmake/itom_3rdParty.cmake)
+endif()
+set(ITOM_3RDPARTYPCLFOLDER CACHE PATH 
+    "Path to the AIO 3rdPartyPCL Folder, containing cmake/itom_3rdPartyPCL.cmake")
+if(ITOM_3RDPARTYPCLFOLDER)
+    include(${ITOM_3RDPARTYPCLFOLDER}/cmake/itom_3rdPartyPCL.cmake)
+endif()
 
 #this is to automatically detect the SDK subfolder of the itom build directory.
 find_path(ITOM_SDK_DIR "cmake/itom_sdk.cmake"
