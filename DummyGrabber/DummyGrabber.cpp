@@ -214,6 +214,37 @@ This plugin can also be used as template for other grabber.");
     sm.addItem("gaussianSpotArray");
     param.setMeta(&sm, false);
     m_initParamsOpt.append(param);
+
+    param = ito::Param("yAxisDescription", ito::ParamBase::String | ito::ParamBase::In, "", tr("description of y axis").toLatin1().data());
+    m_initParamsOpt.append(param);
+
+    param = ito::Param("xAxisDescription", ito::ParamBase::String | ito::ParamBase::In, "", tr("description of x axis").toLatin1().data());
+    m_initParamsOpt.append(param);
+
+    param = ito::Param("yAxisUnit", ito::ParamBase::String | ito::ParamBase::In, "", tr("unit of y axis").toLatin1().data());
+    m_initParamsOpt.append(param);
+
+    param = ito::Param("xAxisUnit", ito::ParamBase::String | ito::ParamBase::In, "", tr("unit of x axis").toLatin1().data());
+    m_initParamsOpt.append(param);
+
+    double scales[] = { 1.0, 1.0 };
+    param = ito::Param("axisScales", ito::ParamBase::DoubleArray | ito::ParamBase::In, 2, scales, tr("list of axis scales of the shape [y, x]").toLatin1().data());
+    ito::DoubleArrayMeta* dam = new ito::DoubleArrayMeta(-std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), 0.0, 2, 2);
+    param.setMeta(dam, true);
+    m_initParamsOpt.append(param);
+
+    double offsets[] = { 0.0, 0.0 };
+    param = ito::Param("axisOffsets", ito::ParamBase::DoubleArray | ito::ParamBase::In, 2, offsets, tr("list of axis offsets of the shape [y, x]").toLatin1().data());
+    dam = new ito::DoubleArrayMeta(-std::numeric_limits<float>::max(), std::numeric_limits<float>::max(), 0.0, 2, 2);
+    param.setMeta(dam, true);
+    m_initParamsOpt.append(param);
+
+    param = ito::Param("valueDescription", ito::ParamBase::String | ito::ParamBase::In, "", tr("description of the value axis").toLatin1().data());
+    m_initParamsOpt.append(param);
+
+    param = ito::Param("valueUnit", ito::ParamBase::String | ito::ParamBase::In, "", tr("unit of the value axis").toLatin1().data());
+    m_initParamsOpt.append(param);
+
 }
 
 //----------------------------------------------------------------------------------------------------------------------------------
@@ -421,6 +452,8 @@ ito::RetVal DummyGrabber::init(QVector<ito::ParamBase> * /*paramsMand*/, QVector
         }
     }
 
+
+
     if (!retVal.containsError())
     {
         checkData(); //check if image must be reallocated
@@ -445,6 +478,25 @@ ito::RetVal DummyGrabber::init(QVector<ito::ParamBase> * /*paramsMand*/, QVector
     }
 
     setIdentifier(QString::number(getID()));
+
+    if (!retVal.containsError())
+    {
+        m_data.setAxisDescription(0, paramsOpt->at(4).getVal<char*>());
+        m_data.setAxisDescription(1, paramsOpt->at(5).getVal<char*>());
+        m_data.setAxisUnit(0, paramsOpt->at(6).getVal<char*>());
+        m_data.setAxisUnit(1, paramsOpt->at(7).getVal<char*>());
+
+        double* axisScales = paramsOpt->at(8).getVal<double*>();
+        m_data.setAxisScale(0, axisScales[0]);
+        m_data.setAxisScale(1, axisScales[1]);
+
+        double* axisOffsets = paramsOpt->at(9).getVal<double*>();
+        m_data.setAxisOffset(0, axisOffsets[0]);
+        m_data.setAxisOffset(1, axisOffsets[1]);
+
+        m_data.setValueDescription(paramsOpt->at(10).getVal<char*>());
+        m_data.setValueUnit(paramsOpt->at(11).getVal<char*>());
+    }
 
     if (waitCond)
     {
