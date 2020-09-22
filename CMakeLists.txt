@@ -317,6 +317,12 @@ if(PLUGIN_OpenCVGrabber)
     add_subdirectory(OpenCVGrabber)
 endif(PLUGIN_OpenCVGrabber)
 
+# OphirSerialPlugin
+option(PLUGIN_OphirSerialPlugin "Build with this plugin." ON)
+if(PLUGIN_OphirSerialPlugin)
+    add_subdirectory(OphirSerialPlugin)
+endif(PLUGIN_OphirSerialPlugin)
+
 # PclTools
 option(PLUGIN_PclTools "Build with this plugin." ON)
 if(PLUGIN_PclTools)
@@ -435,6 +441,22 @@ if(WIN32)
     if(PLUGIN_ThorlabsBP)
         add_subdirectory(ThorlabsBP)
     endif(PLUGIN_ThorlabsBP)
+endif()
+
+# ThorlabsFF benchtop piezo
+if(WIN32)
+    option(PLUGIN_ThorlabsFF "Build with this plugin." OFF)
+    if(PLUGIN_ThorlabsFF)
+        add_subdirectory(ThorlabsFF)
+    endif(PLUGIN_ThorlabsFF)
+endif()
+
+# ThorlabsKCubeIM KCube inertial motor
+if(WIN32)
+    option(PLUGIN_ThorlabsKCubeIM "Build with this plugin." OFF)
+    if(PLUGIN_ThorlabsKCubeIM)
+        add_subdirectory(ThorlabsKCubeIM)
+    endif(PLUGIN_ThorlabsKCubeIM)
 endif()
 
 # ThorlabsKCubePA KCube position aligner
