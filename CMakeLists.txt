@@ -76,6 +76,12 @@ if(PLUGIN_BasicGPLFilters)
     add_subdirectory(BasicGPLFilters)
 endif(PLUGIN_BasicGPLFilters) 
 
+# BristolInstruments
+option(PLUGIN_BristolInstruments "Build with this plugin." OFF)
+if(PLUGIN_BristolInstruments)
+    add_subdirectory(BristolInstruments)
+endif(PLUGIN_BristolInstruments) 
+
 # HidApi
 option(PLUGIN_HidApi "Build with this plugin." OFF)
 if(PLUGIN_HidApi)
