@@ -1,5 +1,5 @@
 /* ********************************************************************
-    Plugin "OphirSerialPlugin" for itom software
+    Plugin "OphirPowermeter" for itom software
     URL: http://www.uni-stuttgart.de/ito
     Copyright (C) 2020, Institut fuer Technische Optik (ITO),
     Universitaet Stuttgart, Germany
@@ -20,7 +20,7 @@
     along with itom. If not, see <http://www.gnu.org/licenses/>.
 *********************************************************************** */
 
-#include "dialogOphirSerialPlugin.h"
+#include "dialogOphirPowermeter.h"
 //#include "OphirSerialPlugin.h"
 
 #include <qdialogbuttonbox.h>
@@ -43,7 +43,7 @@
 //#include <qsharedpointer.h>
 
 //----------------------------------------------------------------------------------------------------------------------------------
-DialogOphirSerialPlugin::DialogOphirSerialPlugin(ito::AddInBase *motor) :
+DialogOphirPowermeter::DialogOphirPowermeter(ito::AddInBase *motor) :
     AbstractAddInConfigDialog(motor),
     m_firstRun(true)
 {
@@ -54,7 +54,7 @@ DialogOphirSerialPlugin::DialogOphirSerialPlugin(ito::AddInBase *motor) :
 };
 
 //----------------------------------------------------------------------------------------------------------------------------------
-void DialogOphirSerialPlugin::parametersChanged(QMap<QString, ito::Param> params)
+void DialogOphirPowermeter::parametersChanged(QMap<QString, ito::Param> params)
 {
     if (m_firstRun)
     {
@@ -75,7 +75,7 @@ void DialogOphirSerialPlugin::parametersChanged(QMap<QString, ito::Param> params
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-ito::RetVal DialogOphirSerialPlugin::applyParameters()
+ito::RetVal DialogOphirPowermeter::applyParameters()
 {
     ito::RetVal retValue(ito::retOk);
     
@@ -84,13 +84,13 @@ ito::RetVal DialogOphirSerialPlugin::applyParameters()
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogOphirSerialPlugin::on_buttonBox_clicked(QAbstractButton* btn)
+void DialogOphirPowermeter::on_buttonBox_clicked(QAbstractButton* btn)
 {
     
 }
 
 //---------------------------------------------------------------------------------------------------------------------
-void DialogOphirSerialPlugin::enableDialog(bool enabled)
+void DialogOphirPowermeter::enableDialog(bool enabled)
 {
 
 }

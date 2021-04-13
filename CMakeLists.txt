@@ -269,6 +269,7 @@ option(PLUGIN_NerianSceneScanPro "Build with this plugin." OFF)
 if(PLUGIN_NerianSceneScanPro)
     add_subdirectory(NerianSceneScanPro)
 endif(PLUGIN_NerianSceneScanPro)
+
 # NanotecStepMotor
 option(PLUGIN_NanotecStepMotor "Build with this plugin." OFF)
 if(PLUGIN_NanotecStepMotor)
@@ -299,6 +300,12 @@ if(PLUGIN_NITWidySWIR)
     add_subdirectory(NITWidySWIR)
 endif(PLUGIN_NITWidySWIR)
 
+# OceanOpticsSpec
+option(PLUGIN_OceanOpticsSpec "Build with this plugin." ON)
+if(PLUGIN_OceanOpticsSpec)
+    add_subdirectory(OceanOpticsSpec)
+endif(PLUGIN_OceanOpticsSpec)
+
 # OpenCVFilters
 option(PLUGIN_OpenCVFilters "Build with this plugin." ON)
 if(PLUGIN_OpenCVFilters)
@@ -317,11 +324,13 @@ if(PLUGIN_OpenCVGrabber)
     add_subdirectory(OpenCVGrabber)
 endif(PLUGIN_OpenCVGrabber)
 
-# OphirSerialPlugin
-option(PLUGIN_OphirSerialPlugin "Build with this plugin." ON)
-if(PLUGIN_OphirSerialPlugin)
-    add_subdirectory(OphirSerialPlugin)
-endif(PLUGIN_OphirSerialPlugin)
+# OphirPowermeter
+if(WIN32)
+    option(PLUGIN_OphirPowermeter "Build with this plugin." OFF)
+    if(PLUGIN_OphirPowermeter)
+        add_subdirectory(OphirPowermeter)
+    endif(PLUGIN_OphirPowermeter)
+endif()
 
 # PclTools
 option(PLUGIN_PclTools "Build with this plugin." ON)

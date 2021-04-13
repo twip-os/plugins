@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>DialogOphirSerialPlugin</class>
- <widget class="QDialog" name="DialogOphirSerialPlugin">
+ <class>DialogOphirPowermeter</class>
+ <widget class="QDialog" name="DialogOphirPowermeter">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -77,11 +77,11 @@
             </widget>
            </item>
            <item row="1" column="0">
-            <widget class="SliderWidget" name="sliderPowerRange">
-             <property name="decimals">
+            <widget class="SliderWidget" name="sliderPowerRange" native="true">
+             <property name="decimals" stdset="0">
               <number>9</number>
              </property>
-             <property name="suffix">
+             <property name="suffix" stdset="0">
               <string> mW</string>
              </property>
             </widget>

@@ -2,34 +2,7 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="de">
 <context>
-    <name>DialogOphirSerialPlugin</name>
-    <message>
-        <source>Ophir</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>General Information</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>unknown</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>serial Nr.: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Name:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>COM Port:</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>DockWidgetOphirSerialPlugin</name>
+    <name>DockWidgetOceanOpticsSpec</name>
     <message>
         <source>Form</source>
         <translation type="unfinished"></translation>
@@ -43,152 +16,182 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>unknown</source>
+        <source>[ID]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Name:</source>
+        <source>ROI</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>serial Nr.: </source>
+        <source>Acquisition</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>COM Port:</source>
+        <source>Integrationtime</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ms</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Average</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dark correction</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
-    <name>OphirSerialPlugin</name>
+    <name>OceanOpticsSpec</name>
     <message>
-        <source>name of requested parameter is empty.</source>
+        <source>Integration time of CCD programmed in s.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>parameter not found in m_params.</source>
+        <source>ROI (x,y,width,height)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Doesn&apos;t fit to interface DataIO!</source>
+        <source>current width of ROI</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Could not read port number from serial port or port number invalid</source>
+        <source>current height</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>return answer %1 for rquest $HT not found.</source>
+        <source>Bit depth. The output object is float32 for all cases but uint16 only if no averaging is enabled.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Name of plugin</source>
+        <source>Number of averages for every frame</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>The current com-port ID of this specific device. -1 means undefined</source>
+        <source>Coefficients for polynom that determines lambda_table (lambda_table[idx] = c[0] + c[1]*idx + c[2]*idx^2 + c[3]*idx^3)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>1 if battery is OK, 0 if battery is low</source>
+        <source>Vector with the wavelength of all active pixels</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Request timeout, default 1000 ms</source>
+        <source>Serial number of spectrometer. Same as identifier.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Serial number of the device shown on display</source>
+        <source>Name of the detector.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Head type (thermopile, BC20, temperature probe, photodiode, CIE head, RP head, pyroelectric, nanoJoule meter, no head connected</source>
+        <source>Tried to acquire without starting device</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Device type (NOVA, VEGA, LASERSTAR-S (single channel), LASERSTAR-D (dual channel), Nova-II)</source>
+        <source>Wrong picture type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Given serial number %1 does not match the received number %2</source>
+        <source>Error during check data, external dataObject invalid. Object has more or less than 1 plane. It must be of right size and type or an uninitilized image.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>unit of device</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Current measured power in unit of parameter unit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Current measured energy in unit of parameter unit</source>
+        <source>Error during check data, external dataObject invalid. Object must be of right size and type or a uninitilized image.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Empty object handle retrieved from caller</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Tried to get picture without triggering exposure</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Error during check data, external dataObject invalid. Object has more than 1 plane or zero planes. It must be of right size and type or an uninitialized image.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Error during check data, external dataObject invalid. Object must be of right size and type or a uninitialized image.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>StartDevice not necessary</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>StopDevice not necessary</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>value could not be parsed to a double value</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>timeout</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>could not read endline parameter from serial port</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
-    <name>OphirSerialPluginInterface</name>
+    <name>OceanOpticsSpecInterface</name>
     <message>
-        <source>An opened serial port (the right communcation parameters will be set by this plugin).</source>
+        <source>VendorID of spectrometer, 0x2457 for OceanOptics STS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Serial number of the device to be loaded, if empty, the first device that is detected will be opened</source>
+        <source>ProductID of spectrometer, 0x4000 for STS</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
-        <source>Plugin for Ophir Powermeters.</source>
+        <source>Ocean Optics Spectrometers</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>The OphirSerialPlugin is an itom plugin which is used for Powermeters from Ophir. 
-It uses a serialIO instance to communication via RS232.
-This plugin sets the necessary serialIO parameter automatically during initialization.
-
-Tested devices: VEGA</source>
+        <source>LGPL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>licensed under LGPL</source>
+        <source>This DLL integrates the OceanOptics spectrometers which use the Ocean Byte Protocol (OBP) into itom. This includes series: STS, QE Pro, Ocean FX, and Ocean HDX  (and probably future releases)
+It uses the libUSB interface to communicate with the devices.
+!This was ONLY fully implemented for the STS series! Others most likely won&apos;t work properly yet.
+Tested with: * OceanOptics STS-UV (25 um slit)</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>dialogAS5216</name>
+    <message>
+        <source>Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Camera Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Integration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Offset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Gain</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>X0</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Size X</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Set X Max</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

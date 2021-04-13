@@ -1,10 +1,12 @@
-set(target_name OphirSerialPlugin) 
+set(target_name OceanOpticsSpec)
 
 
 cmake_minimum_required(VERSION 3.1...3.15)
 
 option(BUILD_TARGET64 "Build for 64 bit target if set to ON or 32 bit if set to OFF." ON)
 set(ITOM_SDK_DIR NOTFOUND CACHE PATH "path of SDK subfolder of itom root (build) directory")
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${ITOM_SDK_DIR}/cmake)
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 #this is to automatically detect the SDK subfolder of the itom build directory.
 find_path(ITOM_SDK_DIR "cmake/itom_sdk.cmake"
@@ -16,19 +18,13 @@ if(NOT ITOM_SDK_DIR)
     message(SEND_ERROR "ITOM_SDK_DIR is invalid. Provide itom SDK directory path first")
 endif()
 
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
-
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${ITOM_SDK_DIR}/cmake)
-
 include(ItomBuildMacros)
 itom_init_cmake_policy(3.12)
 itom_init_plugin_library(${target_name}) #Start the project, init compiler settings and set default configurations for plugins
 
 
 find_package(ITOM_SDK COMPONENTS dataobject itomCommonLib itomCommonQtLib itomWidgets REQUIRED)
-itom_find_package_qt(ON Widgets Core LinguistTools)
-
-find_package(OpenCV COMPONENTS core REQUIRED)
+itom_find_package_qt(ON Widgets UiTools Xml LinguistTools)
 
 
 
@@ -41,23 +37,29 @@ include_directories(
 )
 
 set(PLUGIN_HEADERS
-    ${CMAKE_CURRENT_SOURCE_DIR}/dialogOphirSerialPlugin.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/dockWidgetOphirSerialPlugin.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/OphirSerialPlugin.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/OceanOpticsSpec.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/OceanOpticsSpecDefines.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/dialogOceanOpticsSpec.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/dockWidgetOceanOpticsSpec.h
     ${CMAKE_CURRENT_SOURCE_DIR}/pluginVersion.h
     ${CMAKE_CURRENT_BINARY_DIR}/gitVersion.h
 )
 
-set(PLUGIN_UI
-    ${CMAKE_CURRENT_SOURCE_DIR}/dialogOphirSerialPlugin.ui
-    ${CMAKE_CURRENT_SOURCE_DIR}/dockWidgetOphirSerialPlugin.ui
+set(PLUGIN_SOURCES 
+    ${CMAKE_CURRENT_SOURCE_DIR}/OceanOpticsSpec.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/dialogOceanOpticsSpec.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/dockWidgetOceanOpticsSpec.cpp
 )
 
-set(PLUGIN_SOURCES 
-    ${CMAKE_CURRENT_SOURCE_DIR}/dialogOphirSerialPlugin.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/dockWidgetOphirSerialPlugin.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/OphirSerialPlugin.cpp
+set(PLUGIN_UI
+    ${CMAKE_CURRENT_SOURCE_DIR}/dialogOceanOpticsSpec.ui
+    ${CMAKE_CURRENT_SOURCE_DIR}/dockWidgetOceanOpticsSpec.ui
 )
+
+set(PLUGIN_RCC
+    #add absolute pathes to any *.qrc resource files here
+)
+
 
 #Add version information to the plugIn-dll unter MSVC
 if(MSVC)
@@ -65,13 +67,12 @@ if(MSVC)
 endif()
 
 
-
-add_library(${target_name} SHARED ${PLUGIN_SOURCES} ${PLUGIN_HEADERS} ${PLUGIN_UI} ${PLUGIN_RCC})
+add_library(${target_name} SHARED ${PLUGIN_SOURCES} ${PLUGIN_HEADERS} ${PLUGIN_UI} ${PLUGIN_RCC} )
 
 # Qt: enable all automoc, autouic and autorcc.
 set_target_properties(${target_name} PROPERTIES AUTOMOC ON AUTORCC ON AUTOUIC ON)
 
-target_link_libraries(${target_name} ${ITOM_SDK_LIBRARIES} ${QT5_LIBRARIES} ${VISUALLEAKDETECTOR_LIBRARIES})
+target_link_libraries(${target_name} ${ITOM_SDK_LIBRARIES} ${QT5_LIBRARIES} ${VISUALLEAKDETECTOR_LIBRARIES} ${OMNI_LIBRARIES})
 
 
 
@@ -79,11 +80,13 @@ target_link_libraries(${target_name} ${ITOM_SDK_LIBRARIES} ${QT5_LIBRARIES} ${VI
 set(FILES_TO_TRANSLATE ${PLUGIN_SOURCES} ${PLUGIN_HEADERS} ${PLUGIN_UI})
 itom_library_translation(QM_FILES TARGET ${target_name} FILES_TO_TRANSLATE ${FILES_TO_TRANSLATE})
 
-itom_configure_plugin_documentation(${target_name} OphirSerialPlugin)
+#documentation
+itom_configure_plugin_documentation(${target_name} OceanOpticsSpec)
 
 # COPY SECTION
 set(COPY_SOURCES "")
 set(COPY_DESTINATIONS "")
 itom_add_pluginlibrary_to_copy_list(${target_name} COPY_SOURCES COPY_DESTINATIONS)
+
 itom_add_plugin_qm_files_to_copy_list(${target_name} QM_FILES COPY_SOURCES COPY_DESTINATIONS)
 itom_post_build_copy_files(${target_name} COPY_SOURCES COPY_DESTINATIONS)
