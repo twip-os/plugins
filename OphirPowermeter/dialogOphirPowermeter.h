@@ -1,7 +1,7 @@
 /* ********************************************************************
     Plugin "OphirSerialPlugin" for itom software
     URL: http://www.uni-stuttgart.de/ito
-    Copyright (C) 2020, Institut fuer Technische Optik (ITO),
+    Copyright (C) 2018, Institut fuer Technische Optik (ITO),
     Universitaet Stuttgart, Germany
 
     This file is part of a plugin for the measurement software itom.
@@ -20,49 +20,48 @@
     along with itom. If not, see <http://www.gnu.org/licenses/>.
 *********************************************************************** */
 
-#ifndef DOCKWIDGETOPHIRSERIALPLUGIN_H
-#define DOCKWIDGETOPHIRSERIALPLUGIN_H
+#ifndef DIALOGOPHIRPOWERMETER_H
+#define DIALOGOPHIRPOWERMETER_H
 
-#include "common/abstractAddInDockWidget.h"
-#include "common/addInInterface.h"
-#include "common/sharedStructures.h"
-#include "common/sharedStructuresQt.h"
 #include "common/param.h"
 #include "common/retVal.h"
+#include "common/sharedStructuresQt.h"
+#include "common/abstractAddInConfigDialog.h"
 
-#include <qmap.h>
+#include "ui_dialogOphirPowermeter.h"
+
 #include <qstring.h>
+#include <qstring.h>
+#include <qmap.h>
 #include <qabstractbutton.h>
 
-#include "ui_dockWidgetOphirSerialPlugin.h"
+namespace ito
+{
+    class AddInActuator; //forward declaration
+}
 
-#include <QtGui>
-#include <qwidget.h>
-#include <qsharedpointer.h>
-#include <qmetaobject.h>
-#include <qstackedwidget.h>
-
-class DockWidgetOphirSerialPlugin : public ito::AbstractAddInDockWidget
+class DialogOphirPowermeter : public ito::AbstractAddInConfigDialog
 {
     Q_OBJECT
 
     public:
-        DockWidgetOphirSerialPlugin(int uniqueID, ito::AddInBase *actuator);
-        ~DockWidgetOphirSerialPlugin() {};
+        DialogOphirPowermeter(ito::AddInBase *adda);
+        ~DialogOphirPowermeter() {};
+
+        ito::RetVal applyParameters();
 
     private:
-        void enableWidget(bool enabled);
-
-        Ui::dockWidgetOphirSerialPlugin ui;
-
-        bool m_inEditing;
+        void enableDialog(bool enabled);
         bool m_firstRun;
+        bool m_inEditing;
+        Ui::DialogOphirPowermeter ui; 
 
     public slots:
         void parametersChanged(QMap<QString, ito::Param> params);
-        void identifierChanged(const QString &identifier);
 
     private slots:
+        //auto-connected slot called if ok, apply or cancel is clicked
+        void on_buttonBox_clicked(QAbstractButton* btn);
 
 };
 

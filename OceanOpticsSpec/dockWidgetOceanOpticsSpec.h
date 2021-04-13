@@ -1,8 +1,7 @@
 /* ********************************************************************
-    Plugin "OphirSerialPlugin" for itom software
-    URL: http://www.uni-stuttgart.de/ito
-    Copyright (C) 2018, Institut fuer Technische Optik (ITO),
-    Universitaet Stuttgart, Germany
+    Plugin "OceanOpticsSpec" for itom software
+    URL: http://www.bitbucket.org/itom/plugins
+    Copyright (C) 2014, Institut fuer Technische Optik, Universitaet Stuttgart
 
     This file is part of a plugin for the measurement software itom.
   
@@ -20,49 +19,42 @@
     along with itom. If not, see <http://www.gnu.org/licenses/>.
 *********************************************************************** */
 
-#ifndef DIALOGOPHIRSERIALPLUGIN_H
-#define DIALOGOPHIRSERIALPLUGIN_H
+#ifndef DOCKWIDGETAVANTESAVASPEC_H
+#define DOCKWIDGETAVANTESAVASPEC_H
 
-#include "common/param.h"
-#include "common/retVal.h"
-#include "common/sharedStructuresQt.h"
-#include "common/abstractAddInConfigDialog.h"
+#include "common/abstractAddInDockWidget.h"
+#include "common/addInGrabber.h"
 
-#include "ui_dialogOphirSerialPlugin.h"
-
-#include <qstring.h>
-#include <qstring.h>
 #include <qmap.h>
-#include <qabstractbutton.h>
+#include <qstring.h>
 
-namespace ito
-{
-    class AddInActuator; //forward declaration
-}
+#include "ui_dockWidgetOceanOpticsSpec.h"
 
-class DialogOphirSerialPlugin : public ito::AbstractAddInConfigDialog 
+class DockWidgetOceanOpticsSpec : public ito::AbstractAddInDockWidget
 {
     Q_OBJECT
 
     public:
-        DialogOphirSerialPlugin (ito::AddInBase *motor);
-        ~DialogOphirSerialPlugin () {};
-
-        ito::RetVal applyParameters();
+        DockWidgetOceanOpticsSpec(ito::AddInDataIO *grabber);
+        ~DockWidgetOceanOpticsSpec() {};
 
     private:
-        void enableDialog(bool enabled);
-        bool m_firstRun;
+        Ui::DockWidgetOceanOpticsSpec ui;
+        QMap<QString, ito::Param> m_currentParams;
         bool m_inEditing;
-        Ui::DialogOphirSerialPlugin ui; 
+        bool m_firstRun;
 
     public slots:
         void parametersChanged(QMap<QString, ito::Param> params);
+        void identifierChanged(const QString &identifier);
+
 
     private slots:
-        //auto-connected slot called if ok, apply or cancel is clicked
-        void on_buttonBox_clicked(QAbstractButton* btn);
-
+        void on_spinBox_average_valueChanged(int d);
+        void on_rangeWidget_ROI_minimumValueChanged(int d);
+        void on_rangeWidget_ROI_maximumValueChanged(int d);
+        void on_doubleSpinBox_integration_time_valueChanged(double d);
+		//void on_comboDarkCorrection_currentIndexChanged(int d);
 };
 
 #endif

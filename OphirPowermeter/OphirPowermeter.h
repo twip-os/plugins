@@ -25,40 +25,42 @@ You should have received a copy of the GNU Library General Public License
 along with itom. If not, see <http://www.gnu.org/licenses/>.
 *********************************************************************** */
 
-#ifndef OPHIRSERIALPlUGIN_H
-#define OPHIRSERIALPlUGIN_H
+#ifndef OPHIRPOWERMETER_H
+#define OPHIRPOWERMETER_H
 
 #include "common/addInInterface.h"
 #include "common/abstractAddInDockWidget.h"
 
-#include "dialogOphirSerialPlugin.h"
-#include "dockWidgetOphirSerialPlugin.h"
+#include "dockWidgetOphirPowermeter.h"
 
 #include <qsharedpointer.h>
 #include <qvector.h>
 #include <qpair.h>
 #include <qbytearray.h>
+#include <qmap.h>
 
 #include "DataObject/dataobj.h"
 
+#include "OphirLMMeasurement.h"
+
+Q_DECLARE_METATYPE(std::vector<std::wstring>);
 
 //----------------------------------------------------------------------------------------------------------------------------------
-class OphirSerialPlugin : public ito::AddInDataIO
+class OphirPowermeter : public ito::AddInDataIO
 {
     Q_OBJECT
 
     protected:
         //! Destructor
-        ~OphirSerialPlugin() {}
+        ~OphirPowermeter() {}
         //! Constructor
-        OphirSerialPlugin();
+        OphirPowermeter();
         
         //ito::RetVal retrieveData(ito::DataObject *externalDataObject = NULL); /*!< Wait for acquired picture */
         
     public:
-        friend class OphirSerialPluginInterface;
-        const ito::RetVal showConfDialog(void);
-        int hasConfDialog(void) { return 1; }; //!< indicates that this plugin has got a configuration dialog
+        friend class OphirPowermeterInterface;
+        int hasConfDialog(void) { return 0; }; //!< indicates that this plugin has got a configuration dialog
         
         ito::RetVal retrieveData(ito::DataObject *externalDataObject = NULL); /*!< Wait for acquired picture */
         ito::RetVal checkData(ito::DataObject *externalDataObject = NULL);
@@ -69,12 +71,37 @@ class OphirSerialPlugin : public ito::AddInDataIO
         int m_delayAfterSendCommandMS;
         ito::DataObject m_data;
 
-        DockWidgetOphirSerialPlugin *m_dockWidget;
+        static QList<QByteArray> openedDevices;
+        static QList<QPair<long, long> > openedUSBHandlesAndChannels;
+        std::wstring m_serialNo;
+        QSharedPointer<OphirLMMeasurement> m_OphirLM;
+        long m_handle;
+        long m_channel;
+
+        enum connectionType
+        {
+            RS232,
+            USB
+        };
+        connectionType m_connection;
+
+        QMap<QString, int> m_discreteWavelengths;
+        QMap<QString, int> m_measurementModes;
+
+        DockWidgetOphirPowermeter *m_dockWidget;
         ito::RetVal SerialSendCommand(QByteArray command);
         ito::RetVal readString(QByteArray &result, int &len, int timeoutMS);
         ito::RetVal SendQuestionWithAnswerInt(QByteArray questionCommand, int &answer, int timeoutMS);
         ito::RetVal SendQuestionWithAnswerDouble(QByteArray questionCommand, double &answer, int timeoutMS);
         ito::RetVal SendQuestionWithAnswerString(QByteArray questionCommand, QByteArray &answer, int timeoutMS);
+        bool definitelyLessThan(const double &a, const double &b);
+        bool definitelyGreaterThan(const double &a, const double &b);
+        
+        char *m_charBuffer;
+        char* wCharToChar(const wchar_t *input);
+        char* TCharToChar(const TCHAR* message);
+
+        ito::RetVal checkError(const int &e, const char *message);
 
     public slots:
         //!< Get Camera-Parameter
@@ -98,14 +125,19 @@ class OphirSerialPlugin : public ito::AddInDataIO
 
         ito::RetVal copyVal(void *vpdObj, ItomSharedSemaphore *waitCond);
 
+        ito::RetVal acquireAutograbbing(QSharedPointer<double> value, QSharedPointer<QString> unit, ItomSharedSemaphore *waitCond);
+
+        //ito::RetVal execFunc(const QString funcName, QSharedPointer<QVector<ito::ParamBase> > paramsMand, QSharedPointer<QVector<ito::ParamBase> > paramsOpt, QSharedPointer<QVector<ito::ParamBase> > paramsOut, ItomSharedSemaphore *waitCond = NULL);
+
     private slots:
         void dockWidgetVisibilityChanged(bool visible);
+
     signals:
         void visibilityChanged(bool visible);
 };
 
 //----------------------------------------------------------------------------------------------------------------------------------
-class OphirSerialPluginInterface : public ito::AddInInterfaceBase
+class OphirPowermeterInterface : public ito::AddInInterfaceBase
 {
     Q_OBJECT
         Q_PLUGIN_METADATA(IID "ito.AddInInterfaceBase")
@@ -115,8 +147,8 @@ class OphirSerialPluginInterface : public ito::AddInInterfaceBase
 protected:
 
 public:
-    OphirSerialPluginInterface();
-    ~OphirSerialPluginInterface() {};
+    OphirPowermeterInterface();
+    ~OphirPowermeterInterface() {};
     ito::RetVal getAddInInst(ito::AddInBase **addInInst);
 
 private:
@@ -128,4 +160,4 @@ signals:
     public slots :
 };
 
-#endif // OPHIRSERIALPLUGIN_H
+#endif // OPHIRPOWERMETER_H
