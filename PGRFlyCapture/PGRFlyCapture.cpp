@@ -2144,7 +2144,7 @@ ito::RetVal PGRFlyCapture::copyVal(void *vpdObj, ItomSharedSemaphore *waitCond)
         retValue += ito::RetVal(ito::retError, 0, tr("Empty object handle retrieved from caller").toLatin1().data());
     }
 #ifndef I_KNOW_WHAT_I_AM_DOING
-    else if(dObj == m_data)
+    else if(dObj == &m_data)
     {
         std::cout << "You are copying to the internal dataObject. You copy is not persistent." << "\n";
     }
