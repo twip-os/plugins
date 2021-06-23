@@ -126,6 +126,12 @@ if(PLUGIN_DataObjectIO)
     add_subdirectory(DataObjectIO)
 endif(PLUGIN_DataObjectIO)
 
+# Digital Image Correlation - DIC
+option(PLUGIN_DIC "Build with this plugin." OFF)
+if(PLUGIN_DIC)
+    add_subdirectory(DIC)
+endif(PLUGIN_DIC)
+
 # dispWindow
 option(PLUGIN_dispWindow "Build with this plugin." OFF)
 if(PLUGIN_dispWindow)
@@ -217,6 +223,12 @@ option(PLUGIN_GWInstekPSP "Build with this plugin." OFF)
 if(PLUGIN_GWInstekPSP)
     add_subdirectory(GWInstekPSP)
 endif(PLUGIN_GWInstekPSP)
+
+# HBM Spider8
+option(PLUGIN_HBMSpider8 "Build with this plugin." OFF)
+if(PLUGIN_HBMSpider8)
+    add_subdirectory(HBMSpider8)
+endif(PLUGIN_HBMSpider8)
 
 # Holography
 option(PLUGIN_Holography "Build with this plugin." ON)
@@ -458,6 +470,14 @@ if(WIN32)
     if(PLUGIN_ThorlabsFF)
         add_subdirectory(ThorlabsFF)
     endif(PLUGIN_ThorlabsFF)
+endif()
+
+# ThorlabsKCubeDCServo KCube DC Servo
+if(WIN32)
+    option(PLUGIN_ThorlabsKCubeDCServo "Build with this plugin." OFF)
+    if(PLUGIN_ThorlabsKCubeDCServo)
+        add_subdirectory(ThorlabsKCubeDCServo)
+    endif(PLUGIN_ThorlabsKCubeDCServo)
 endif()
 
 # ThorlabsKCubeIM KCube inertial motor
