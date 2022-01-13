@@ -49,8 +49,8 @@ along with itom. If not, see <http://www.gnu.org/licenses/>.
 
 #define BUFFER_SIZE 100
 
-QList<QByteArray> OphirPowermeter::openedDevices = QList<QByteArray>();
-QList<QPair<long, long>> OphirPowermeter::openedUSBHandlesAndChannels = QList<QPair<long, long>>();
+QList<QByteArray> OphirPowermeter::m_openedDevices = QList<QByteArray>();
+QList<QPair<long, long>> OphirPowermeter::m_openedUSBHandlesAndChannels = QList<QPair<long, long>>();
 
 struct CoInitializer
 {
@@ -322,6 +322,12 @@ OphirPowermeter::OphirPowermeter() :
 }
 
 //----------------------------------------------------------------------------------------------------------------------------------
+OphirPowermeter::~OphirPowermeter()
+{
+    CoUninitialize();
+}
+
+//----------------------------------------------------------------------------------------------------------------------------------
 //! initialization of plugin
 /*!
     \sa close
@@ -341,7 +347,7 @@ ito::RetVal OphirPowermeter::init(
 
     QByteArray serialNoInput = paramsOpt->at(1).getVal<char*>();
 
-    if (openedDevices.contains(
+    if (m_openedDevices.contains(
             serialNoInput)) // exit here if device with serial number already connected
     {
         retval += ito::RetVal(
@@ -438,6 +444,7 @@ ito::RetVal OphirPowermeter::init(
                 {
                     m_params["comPort"].setVal<int>(param->getVal<int>());
                 }
+                Sleep(500);
             }
 
             if (!retval.containsError()) // get information
@@ -452,21 +459,39 @@ ito::RetVal OphirPowermeter::init(
 
                 QRegExp reg("(\\S+)"); // matches numbers
 
-                QStringList list;
+                QStringList list = QStringList();
                 int pos = 0;
+                bool found = false;
+                QByteArray headSerial;
+                QByteArray headName;
 
                 while ((pos = reg.indexIn(answerStr, pos)) != -1)
                 {
                     list << reg.cap(1);
                     pos += reg.matchedLength();
+                    found = true;
                 }
-
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
+                QStringList list2 = QString::fromStdString(answerStr.toStdString())
+                                        .split(" ", Qt::SkipEmptyParts);
+#else
                 QStringList list2 = QString::fromStdString(answerStr.toStdString())
                                         .split(" ", QString::SkipEmptyParts);
-
-                QByteArray headSerial = list.at(1).toLatin1();
-                QByteArray headName = list.at(2).toLatin1();
-
+#endif
+                if (found)
+                {
+                    headSerial = list.at(1).toLatin1();
+                    headName = list.at(2).toLatin1();
+                }
+                else
+                {
+                    retval += ito::RetVal(
+                        ito::retError,
+                        0,
+                        tr("Could not read head serial number")
+                            .toLatin1()
+                            .data());
+                }
 
                 if (!retval.containsError())
                 {
@@ -559,35 +584,52 @@ ito::RetVal OphirPowermeter::init(
                 QRegExp reg("(\\S+)"); // matches numbers
 
                 QStringList list;
+                QByteArray foundSerialNo;
                 int pos = 0;
 
                 while ((pos = reg.indexIn(answerStr, pos)) != -1)
                 {
                     list << reg.cap(1);
                     pos += reg.matchedLength();
+                    found = true;
                 }
-                QByteArray foundSerialNo = list.at(1).toLatin1();
 
-                if (serialNoInput == "")
+                if (found)
                 {
-                    found = true;
-                }
-                else if (
-                    serialNoInput.contains(foundSerialNo) &&
-                    serialNoInput.length() == foundSerialNo.length())
-                {
-                    found = true;
+                    foundSerialNo = list.at(1).toLatin1();
                 }
                 else
                 {
                     retval += ito::RetVal(
                         ito::retError,
                         0,
-                        tr("Given serial number %1 does not match the received number %2")
-                            .arg(serialNoInput.data())
-                            .arg(foundSerialNo.data())
-                            .toLatin1()
-                            .data());
+                        tr("Cound not read instrument serial number.").toLatin1().data());
+                }
+
+                if (!retval.containsError())
+                {
+
+                    if (serialNoInput == "")
+                    {
+                        found = true;
+                    }
+                    else if (
+                        serialNoInput.contains(foundSerialNo) &&
+                        serialNoInput.length() == foundSerialNo.length())
+                    {
+                        found = true;
+                    }
+                    else
+                    {
+                        retval += ito::RetVal(
+                            ito::retError,
+                            0,
+                            tr("Given serial number %1 does not match the received number %2")
+                                .arg(serialNoInput.data())
+                                .arg(foundSerialNo.data())
+                                .toLatin1()
+                                .data());
+                    }
                 }
 
                 if (!retval.containsError() && found)
@@ -809,7 +851,7 @@ ito::RetVal OphirPowermeter::init(
             {
                 CoInitializer initializer; // must call for COM initialization and deinitialization
                 m_OphirLM = QSharedPointer<OphirLMMeasurement>(new OphirLMMeasurement);
-
+                
                 if (m_OphirLM.isNull())
                 {
                     m_OphirLM.clear();
@@ -849,11 +891,9 @@ ito::RetVal OphirPowermeter::init(
                          idx++) // iterate through all serialnumbers
                     {
                         char* foundTemp = wCharToChar(serialsFound[idx].c_str());
-                        std::string input = serialNoInput.toStdString();
 
-
-                        if (openedDevices.contains(
-                                wCharToChar(serialsFound[idx].c_str()))) // already connected
+                        if (m_openedDevices.contains(wCharToChar(serialsFound[idx].c_str())) &&
+                            (serialNoInput == serialsFound[idx].c_str())) // already connected
                         {
                             retval += ito::RetVal(
                                 ito::retError,
@@ -920,9 +960,9 @@ ito::RetVal OphirPowermeter::init(
             // check if sensor exists
             if (!retval.containsError())
             {
-                openedDevices.append(wCharToChar(m_serialNo.c_str()));
+                m_openedDevices.append(wCharToChar(m_serialNo.c_str()));
                 QPair<long, long> pair = QPair<long, long>(m_handle, m_channel);
-                openedUSBHandlesAndChannels.append(pair);
+                m_openedUSBHandlesAndChannels.append(pair);
 
                 bool exists;
                 try
@@ -1271,7 +1311,7 @@ ito::RetVal OphirPowermeter::close(ItomSharedSemaphore* waitCond)
     {
         try
         {
-            m_OphirLM->StopStream(m_handle, m_channel);
+            //m_OphirLM->StopStream(m_handle, m_channel);
             m_OphirLM->Close(m_handle);
         }
         catch (const _com_error& e)
@@ -1279,9 +1319,9 @@ ito::RetVal OphirPowermeter::close(ItomSharedSemaphore* waitCond)
             retValue += ito::RetVal(ito::retError, 0, TCharToChar(e.ErrorMessage()));
         }
 
-        openedDevices.removeOne(wCharToChar(m_serialNo.c_str()));
+        m_openedDevices.removeOne(wCharToChar(m_serialNo.c_str()));
         QPair<long, long> pair = QPair<long, long>(m_handle, m_channel);
-        openedUSBHandlesAndChannels.removeOne(pair);
+        m_openedUSBHandlesAndChannels.removeOne(pair);
     }
 
     // Free multibyte character buffer
@@ -2034,7 +2074,7 @@ ito::RetVal OphirPowermeter::readString(QByteArray& result, int& len, int timeou
 {
     ito::RetVal retValue = ito::retOk;
     bool done = false;
-    QTime timer;
+    QElapsedTimer timer;
     QByteArray endline;
     int curFrom = 0;
     int pos = 0;
@@ -2042,6 +2082,7 @@ ito::RetVal OphirPowermeter::readString(QByteArray& result, int& len, int timeou
     QSharedPointer<int> curBufLen(new int);
     QSharedPointer<char> curBuf(new char[buflen]);
     result = "";
+    timer.start();
 
     QSharedPointer<ito::Param> param(new ito::Param("endline"));
     retValue += m_pSer->getParam(param, NULL);
