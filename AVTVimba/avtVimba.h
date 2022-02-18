@@ -1,5 +1,5 @@
 /* ********************************************************************
-Plugin "Roughness" for itom software
+Plugin "AVTVimba" for itom software
 URL : http ://www.uni-stuttgart.de/ito
 Copyright(C) 2016, Institut fuer Technische Optik (ITO), 
                    Universitaet Stuttgart, Germany; 
@@ -84,6 +84,7 @@ class AvtVimba : public ito::AddInGrabber
     private:
         ito::RetVal checkError(VmbErrorType errCode, const char* prefix = NULL);
 
+        ito::RetVal checkFeatureExists(const char* name);
         ito::RetVal getIntFeatureByName(const char *name, VmbInt64_t &value);
         ito::RetVal getIntFeatureByName(const char *name, VmbInt64_t &value, VmbInt64_t &max, VmbInt64_t &min, VmbInt64_t &inc);
         ito::RetVal getEnumFeatureByName(const char *name, std::string &value, VmbInt64_t &idx);
@@ -112,7 +113,8 @@ class AvtVimba : public ito::AddInGrabber
             fGain = 0x040,
             fOffset = 0x080,
             fGamma = 0x100,
-            fAll = fBpp | fSize | fBinning | fExposure | fGigETransport | fTrigger | fGain | fOffset | fGamma
+            fThroughputlimit = 0x200,
+            fAll = fBpp | fSize | fBinning | fExposure | fGigETransport | fTrigger | fGain | fOffset | fGamma | fThroughputlimit
         };
 
         ito::RetVal synchronizeParameters(int features);
@@ -131,6 +133,9 @@ class AvtVimba : public ito::AddInGrabber
         BppEnum m_bppEnum;
         int timeoutMS;
         const char* nameExposureTime;
+
+        
+
         
     public slots:
         //!< Get Camera-Parameter
