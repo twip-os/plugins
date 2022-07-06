@@ -1,0 +1,30 @@
+{
+    "version": 2,
+    "configurePresets": [
+        {
+            "name": "transporto_release",
+            "displayName": "Transporto Release",
+            "description": "Sets Ninja generator and disables debug postfix.",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/../../build/plugins",
+            "cacheVariables": {
+                "CMAKE_DEBUG_POSTFIX": {
+                    "type": "STRING",
+                    "value": ""
+                },
+                "BUILD_TARGET64": "OFF",
+                "PLUGIN_XIMEA": "ON",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": true,
+                "CMAKE_BUILD_TYPE": "Release"
+            }
+        },
+        {
+            "name": "transporto_debug",
+            "displayName": "Transporto Debug",
+            "inherits": "transporto_release",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
+        }
+    ]
+}
