@@ -12,8 +12,10 @@
                     "type": "STRING",
                     "value": ""
                 },
-                "BUILD_TARGET64": "OFF",
+                "BUILD_TARGET64": "ON",
                 "PLUGIN_XIMEA": "ON",
+                "XIMEA_APIDIR": "/opt/XIMEA/include",
+                "PLUGIN_V4L2": "OFF",
                 "CMAKE_EXPORT_COMPILE_COMMANDS": true,
                 "CMAKE_BUILD_TYPE": "Release"
             }
