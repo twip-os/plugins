@@ -35,6 +35,8 @@ along with itom.If not, see <http://www.gnu.org/licenses/>.
 
 #include "dockWidgetAvtVimba.h"
 
+#include "avtVimba_names.h"
+
 //----------------------------------------------------------------------------------------------------------------------------------
 //! Constructor of Interface Class.
 /*!
@@ -49,16 +51,15 @@ AvtVimbaInterface::AvtVimbaInterface()
     m_type = ito::typeDataIO | ito::typeGrabber; //any grabber is a dataIO device AND its subtype grabber (bitmask -> therefore the OR-combination).
     setObjectName("AVTVimba");
 
-    m_description = QObject::tr("AVT GigE, firewire and USB cameras using Vimba interface");
+    m_description = QObject::tr("AVT GigE and firewire cameras using Vimba interface");
 
     m_detaildescription = QObject::tr(
 "This plugin supports Allied Vision GigE and firewire cameras and has currently been tested with the following models: \n\
 \n\
 - Marlin, F033 (monochrome, Firewire) \n\
 - Manta G-917B and G-146B (monochrome, GigE) \n\
-- Alvium 1800 U-811c (monochrome, USB) \n\
 \n\
-The plugin was tested with AVT Vimba 1.3.0, 1.4.0, 2.5.0. \n\
+The plugin was tested with AVT Vimba 1.3.0 and 1.4.0. \n\
 \n\
 In order to run your camera, please install the Vimba SDK in the right version such that the necessary drivers are installed. \n\
 Color formats are not supported.");
@@ -183,6 +184,17 @@ AvtVimba::AvtVimba() :
 
     paramVal = ito::Param("trigger_activation", ito::ParamBase::String | ito::ParamBase::In, NULL, tr("trigger activation (RisingEdge, FallingEdge, AnyEdge, LevelHigh, LevelLow). Not all values are supported for all cameras.").toLatin1().data());
     m_params.insert(paramVal.getName(),paramVal);
+
+    paramVal = ito::Param("device_througputlimit", ito::ParamBase::Int | ito::ParamBase::In, 4375000, 450000000, 200000000, tr("Limits the maximum bandwidth of the data that will be streamed out by the device on the selected Link.If necessary, delays will be uniformly inserted between transport layer packets in order to control the peak bandwidth.").toLatin1().data());
+    m_params.insert(paramVal.getName(), paramVal);
+    paramVal = ito::Param("device_througputlimitmode", ito::ParamBase::Int | ito::ParamBase::In, 0, 1, 0, tr("0: off; 1: on. Controls if the DeviceLinkThroughputLimit is active.When disabled, lower level TL specific features are expected to control the throughput.When enabled, DeviceLinkThroughputLimit controls the overall throughput. 'on' activates the Mode, 'off' disables the mode").toLatin1().data());
+    m_params.insert(paramVal.getName(), paramVal);
+
+    paramVal = ito::Param("framerate", ito::ParamBase::Double | ito::ParamBase::In, 0.0, 999.9, 0.0, tr("Controls the acquisition rate (in Hertz) at which the frames are captured.").toLatin1().data());
+    m_params.insert(paramVal.getName(), paramVal);
+
+    paramVal = ito::Param("framerate_enabled", ito::ParamBase::Int | ito::ParamBase::In, 0, 1, 0, tr("Controls if the AcquisitionFrameRate feature is writable and used to control the acquisition rate. Otherwise, the acquisition rate is implicitly controlled by the combination of other features like ExposureTime, etc.").toLatin1().data());
+    m_params.insert(paramVal.getName(), paramVal);
 
     //the following lines create and register the plugin's dock widget. Delete these lines if the plugin does not have a dock widget.
     DockWidgetAvtVimba *dw = new DockWidgetAvtVimba(this);
@@ -338,6 +350,11 @@ ito::RetVal AvtVimba::init(QVector<ito::ParamBase> *paramsMand, QVector<ito::Par
                         {
                             packetSize = 8228;
                         }
+
+                        //remove unused parameters
+                        m_params.remove("device_througputlimit");
+                        m_params.remove("device_througputlimitmode");
+
                         retValue += setIntFeature("GVSPPacketSize", packetSize);
                     }
                     else if (m_interfaceType == VmbInterfaceFirewire)
@@ -353,27 +370,35 @@ ito::RetVal AvtVimba::init(QVector<ito::ParamBase> *paramsMand, QVector<ito::Par
                         m_params.remove("stream_bps");
                         m_params.remove("packet_size");
                         m_params.remove("device_temperature");
+                        m_params.remove("device_througputlimit");
+                        m_params.remove("device_througputlimitmode");
 
                         retValue += getEnumFeatureByName("TriggerSelector", enum_name, enum_idx);
                     }
                     else if (m_interfaceType == VmbInterfaceUsb)
                     {
-                        // some defaults (they are not changed in this plugin)
-                        setEnumFeature("TriggerMode", "Off"); // trigger off makes no sense
-                        setEnumFeature("ExposureAuto", "Off");
-                        setEnumFeature("ExposureMode", "Timed");
-                        setEnumFeature(
-                            "TriggerSelector",
-                            "ExposureStart"); // if the trigger source is changed, it changes the
-                                              // trigger for starting an exposure
-                        setEnumFeature("BlackLevelSelector", "All");
+                        //some defaults (they are not changed in this plugin)
+                        retValue += setEnumFeature("TriggerMode", "Off"); //trigger off makes no sense
+                        retValue += setEnumFeature("ExposureAuto", "Off");
+                        retValue += setEnumFeature("ExposureMode", "Timed");
+                        retValue += setEnumFeature("TriggerSelector", "ExposureStart"); //if the trigger source is changed, it changes the trigger for starting an exposure
+                        retValue += setEnumFeature("BlackLevelSelector", "All");
 
-                        // remove unused parameters
+                        //remove unused parameters
                         m_params.remove("stream_bps");
                         m_params.remove("packet_size");
 
-                        retValue += getEnumFeatureByName("TriggerSelector", enum_name, enum_idx);
+                        //Setting camera specific ranges for parameters
+                        VmbInt64_t minVal, maxVal, incSize;
+                        double minDVal, maxDVal;
+                        retValue += getRange(P_DEVICELINKLIMIT_NAME, maxVal, minVal, incSize);
+                        m_params["device_througputlimit"].setMeta(new ito::IntMeta(minVal, maxVal, incSize), true);
 
+                        retValue += getRange(P_EXPOSURETIME_NAME, minDVal, maxDVal);
+                        m_params["integration_time"].setMeta(new ito::DoubleMeta(minDVal, maxDVal), true);
+
+                        retValue += getRange(P_FRAMERATE_NAME, maxDVal, minDVal);
+                        m_params["framerate"].setMeta(new ito::DoubleMeta(minDVal, maxDVal), true);
                     }
                 }
 
@@ -553,7 +578,6 @@ ito::RetVal AvtVimba::init(QVector<ito::ParamBase> *paramsMand, QVector<ito::Par
                             }
                         }
                     }
-
                     m_params["trigger_activation"].setMeta(sm, true);
                 }
 
@@ -676,6 +700,37 @@ ito::RetVal AvtVimba::close(ItomSharedSemaphore *waitCond)
         waitCond->release();
     }
     
+    return retValue;
+}
+
+//----------------------------------------------------------------------------------------------------------------------------------
+ito::RetVal AvtVimba::checkFeatureExists(const char* name)
+{
+    ito::RetVal retValue;
+    FeaturePtrVector pFeature;
+    std::string featureName;
+    bool featureExists = false;
+
+    retValue += checkError(m_camera->GetFeatures(pFeature));
+    for (auto& it : pFeature)
+    {
+        it->GetName(featureName);
+        if (featureName.compare(name) == 0)
+        {
+            featureExists = true;
+            retValue = ito::RetVal(ito::retError, 0, "Given feature not available for this camera!");
+        }
+    }
+
+    if (featureExists)
+    {
+        retValue = ito::retOk();
+    }
+    else
+    {
+        retValue = ito::RetVal(ito::retError, 0, "Given feature not available for this camera!");
+    }
+
     return retValue;
 }
 
@@ -1019,8 +1074,12 @@ ito::RetVal AvtVimba::setParam(QSharedPointer<ito::ParamBase> val, ItomSharedSem
         }
         else if (key == "stream_bps")
         {
-            retValue += setIntFeature("StreamBytesPerSecond", val->getVal<int>());
-            retValue += synchronizeParameters(fGigETransport);
+            retValue += checkFeatureExists(P_STREAMBPS_NAME);
+            if (!retValue.containsError())
+            {
+                retValue += setIntFeature(P_STREAMBPS_NAME, val->getVal<int>());
+                retValue += synchronizeParameters(fGigETransport);
+            }
         }
         else if (key == "packet_size")
         {
@@ -1121,6 +1180,16 @@ ito::RetVal AvtVimba::setParam(QSharedPointer<ito::ParamBase> val, ItomSharedSem
             QSharedPointer<ito::ParamBase> p(new ito::ParamBase("roi[3]", ito::ParamBase::Int, 1 + val->getVal<int>() - m_params["roi"].getVal<int*>()[1]));
             retValue += setParam(p, NULL);
         }
+        else if (key == "device_througputlimitmode")
+        {
+            retValue += setEnumFeature(P_DEVICELINKLIMITMODE_NAME, val->getVal<int>() == 0 ? "Off" : "On");
+            retValue += synchronizeParameters(fThroughputlimit);
+        }
+        else if (key == "device_througputlimit")
+        {
+            retValue += setIntFeature(P_DEVICELINKLIMIT_NAME, val->getVal<int>());
+            retValue += synchronizeParameters(fThroughputlimit);
+        }
         else
         {
             //all parameters that don't need further checks can simply be assigned
@@ -1196,6 +1265,7 @@ ito::RetVal AvtVimba::acquire(const int trigger, ItomSharedSemaphore *waitCond)
     ItomSharedSemaphoreLocker locker(waitCond);
     ito::RetVal retValue(ito::retOk);
     bool RetCode = false;
+    AVT::VmbAPI::FeaturePtr feature;
 
     if (grabberStartedCount() <= 0)
     {
@@ -1204,7 +1274,7 @@ ito::RetVal AvtVimba::acquire(const int trigger, ItomSharedSemaphore *waitCond)
     else
     {
         m_isgrabbing = true;
-        AVT::VmbAPI::FeaturePtr feature;
+        
         if (m_camera->GetFeatureByName("TriggerSoftware", feature) == VmbErrorSuccess)
         {
             retValue += checkError(feature->RunCommand());
@@ -1217,6 +1287,7 @@ ito::RetVal AvtVimba::acquire(const int trigger, ItomSharedSemaphore *waitCond)
         waitCond->returnValue = retValue;
         waitCond->release();  
     }
+    VmbFrameStatusType status = VmbFrameStatusIncomplete;
     
     if (timeoutMS > 2000)
     {
@@ -1227,6 +1298,15 @@ ito::RetVal AvtVimba::acquire(const int trigger, ItomSharedSemaphore *waitCond)
     else
     {
         m_acquisitionStatus = checkError(m_camera->AcquireSingleImage(m_frame, timeoutMS));
+    }
+
+    if (!m_acquisitionStatus.containsError())
+    {
+        retValue = m_frame->GetReceiveStatus(status);
+    }
+    if (status == VmbFrameStatusIncomplete)
+    {
+        retValue += ito::RetVal(ito::retError, -1, "Image acquisition did not received a full frame!");
     }
 
     return retValue;
@@ -1593,7 +1673,7 @@ ito::RetVal AvtVimba::synchronizeParameters(int features)
     if ((features & fGigETransport) && m_interfaceType == VmbInterfaceEthernet)
     {
         VmbInt64_t intVal, intMin, intMax, intInc;
-        ret_ = getIntFeatureByName("StreamBytesPerSecond",intVal, intMax, intMin, intInc);
+        ret_ = getIntFeatureByName(P_STREAMBPS_NAME,intVal, intMax, intMin, intInc);
         ParamMapIterator it = m_params.find("stream_bps");
         if (!ret_.containsError())
         {
@@ -1721,6 +1801,30 @@ ito::RetVal AvtVimba::synchronizeParameters(int features)
 			ret_ = ito::retOk;
 		}
         retval += ret_;
+    }
+
+    if (features & fThroughputlimit)
+    {
+        ret_ += getEnumFeatureByName(P_DEVICELINKLIMITMODE_NAME, enumVal, enumIdx);
+        if (!ret_.containsError())
+        {
+            if (enumVal == "Off")
+            {
+                m_params["device_througputlimitmode"].setVal<int>(0);
+            }
+            else
+            {
+                m_params["device_througputlimitmode"].setVal<int>(1);
+            }
+
+        }
+
+        VmbInt64_t val;
+        ret_ += getIntFeatureByName(P_DEVICELINKLIMIT_NAME, val);
+        if (!ret_.containsError())
+        {
+            m_params["device_througputlimit"].setVal<int>(val);
+        }
     }
 
     retval += checkData();

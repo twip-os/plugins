@@ -20,6 +20,9 @@ cmake_minimum_required(VERSION 3.1...3.15)
 option(BUILD_TARGET64 "Build for 64 bit target if set to ON or 32 bit if set to OFF." ON)
 set(ITOM_SDK_DIR NOTFOUND CACHE PATH "path of SDK subfolder of itom root (build) directory")
 
+set(AVTVIMBA_BUILD_API_VERSION "5.0" CACHE STRING "Expected API version")
+set_property(CACHE AVTVIMBA_BUILD_API_VERSION PROPERTY STRINGS 3.0 4.0 5.0)
+
 #this is to automatically detect the SDK subfolder of the itom build directory.
 find_path(ITOM_SDK_DIR "cmake/itom_sdk.cmake"
     HINTS "C:/itom/build/itom/SDK"
@@ -78,7 +81,11 @@ if(AVTVIMBA_INCLUDE_DIR)
 
 
 
-    
+    if(AVTVIMBA_BUILD_API_VERSION VERSION_EQUAL "5.0")
+        add_definitions(-DUSE_API_5)
+    else(AVTVIMBA_BUILD_API_VERSION)
+        add_definitions(-DUSE_API_3)
+    endif(AVTVIMBA_BUILD_API_VERSION VERSION_EQUAL "5.0")
             
     
 
@@ -128,6 +135,7 @@ if(AVTVIMBA_INCLUDE_DIR)
     #################################################################
     set(PLUGIN_HEADERS
         ${CMAKE_CURRENT_SOURCE_DIR}/avtVimba.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/avtVimba_names.h
         ${CMAKE_CURRENT_SOURCE_DIR}/dialogAvtVimba.h
         ${CMAKE_CURRENT_SOURCE_DIR}/dockWidgetAvtVimba.h
         ${CMAKE_CURRENT_SOURCE_DIR}/avtEnums.h
