@@ -1,0 +1,56 @@
+{
+    "version": 2,
+    "configurePresets": [
+        {
+            "name": "twip_common",
+            "hidden": true,
+            "binaryDir": "${sourceDir}/../../build/plugins",
+            "cacheVariables": {
+                "BUILD_TARGET64": "ON",
+                "ITOM_APP_DIR": "${sourceDir}/../../build/itom",
+                "PLUGIN_XIMEA": "ON",
+                "Boost_NO_WARN_NEW_VERSIONS": "ON"
+            }
+        },
+        {
+            "name": "develop_windows",
+            "displayName": "Develop Windows",
+            "inherits": "twip_common",
+            "description": "Sets Visual Studio generator.",
+            "generator": "Visual Studio 16 2019",
+            "cacheVariables": {
+                "BUILD_WITH_PCL": "ON",
+                "ITOM_3RDPARTYFOLDER": "${sourceDir}/../../3rdParty",
+                "ITOM_3RDPARTYPCLFOLDER": "${sourceDir}/../../3rdPartyPCL",
+                "XIMEA_APIDIR": "C:/XIMEA/API/xiAPI",
+                "PLUGIN_PGRFlyCapture": "ON",
+                "FLYCAPTURE_PGRFLYCAP_INCLUDE_DIR": "C:/Program Files/Point Grey Research/FlyCapture2/include"
+            }
+        },
+        {
+            "name": "transporto_release",
+            "displayName": "Transporto Release",
+            "inherits": "twip_common",
+            "description": "Sets Ninja generator and disables debug postfix.",
+            "generator": "Ninja",
+            "cacheVariables": {
+                "CMAKE_DEBUG_POSTFIX": {
+                    "type": "STRING",
+                    "value": ""
+                },
+                "XIMEA_APIDIR": "/opt/XIMEA/include",
+                "PLUGIN_V4L2": "OFF",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": true,
+                "CMAKE_BUILD_TYPE": "Release"
+            }
+        },
+        {
+            "name": "transporto_debug",
+            "displayName": "Transporto Debug",
+            "inherits": "transporto_release",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
+        }
+    ]
+}
