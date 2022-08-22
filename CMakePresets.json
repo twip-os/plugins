@@ -6,10 +6,17 @@
             "hidden": true,
             "binaryDir": "${sourceDir}/../../build/plugins",
             "cacheVariables": {
-                "BUILD_TARGET64": "ON",
+                "BUILD_TARGET64": true,
                 "ITOM_APP_DIR": "${sourceDir}/../../build/itom",
-                "PLUGIN_XIMEA": "ON",
-                "Boost_NO_WARN_NEW_VERSIONS": "ON"
+                "PLUGIN_XIMEA": true,
+                "PLUGIN_Holography": false,
+                "PLUGIN_LIBUSB": false,
+                "PLUGIN_OceanOpticsSpec": false,
+                "PLUGIN_OpenCVGrabber": false,
+                "PLUGIN_QuantumComposer": false,
+                "PLUGIN_rawImport": false,
+                "PLUGIN_x3pio": false,
+                "Boost_NO_WARN_NEW_VERSIONS": true
             }
         },
         {
@@ -19,11 +26,11 @@
             "description": "Sets Visual Studio generator.",
             "generator": "Visual Studio 16 2019",
             "cacheVariables": {
-                "BUILD_WITH_PCL": "ON",
+                "BUILD_WITH_PCL": true,
                 "ITOM_3RDPARTYFOLDER": "${sourceDir}/../../3rdParty",
                 "ITOM_3RDPARTYPCLFOLDER": "${sourceDir}/../../3rdPartyPCL",
                 "XIMEA_APIDIR": "C:/XIMEA/API/xiAPI",
-                "PLUGIN_PGRFlyCapture": "ON",
+                "PLUGIN_PGRFlyCapture": true,
                 "FLYCAPTURE_PGRFLYCAP_INCLUDE_DIR": "C:/Program Files/Point Grey Research/FlyCapture2/include"
             }
         },
@@ -39,7 +46,7 @@
                     "value": ""
                 },
                 "XIMEA_APIDIR": "/opt/XIMEA/include",
-                "PLUGIN_V4L2": "OFF",
+                "PLUGIN_V4L2": false,
                 "CMAKE_EXPORT_COMPILE_COMMANDS": true,
                 "CMAKE_BUILD_TYPE": "Release"
             }
