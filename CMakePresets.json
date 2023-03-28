@@ -23,10 +23,25 @@
             "name": "develop_windows",
             "displayName": "Develop Windows",
             "inherits": "twip_common",
-            "description": "Sets Visual Studio generator.",
+            "description": "Sets Visual Studio generator. With PCL.",
             "generator": "Visual Studio 16 2019",
             "cacheVariables": {
                 "BUILD_WITH_PCL": true,
+                "ITOM_3RDPARTYFOLDER": "${sourceDir}/../../3rdParty",
+                "ITOM_3RDPARTYPCLFOLDER": "${sourceDir}/../../3rdPartyPCL",
+                "XIMEA_APIDIR": "C:/XIMEA/API/xiAPI",
+                "PLUGIN_PGRFlyCapture": true,
+                "FLYCAPTURE_PGRFLYCAP_INCLUDE_DIR": "C:/Program Files/Point Grey Research/FlyCapture2/include"
+            }
+        },
+        {
+            "name": "twip_api",
+            "displayName": "twip API",
+            "inherits": "twip_common",
+            "description": "Sets Visual Studio generator. Without PCL.",
+            "generator": "Visual Studio 16 2019",
+            "cacheVariables": {
+                "BUILD_WITH_PCL": false,
                 "ITOM_3RDPARTYFOLDER": "${sourceDir}/../../3rdParty",
                 "ITOM_3RDPARTYPCLFOLDER": "${sourceDir}/../../3rdPartyPCL",
                 "XIMEA_APIDIR": "C:/XIMEA/API/xiAPI",
