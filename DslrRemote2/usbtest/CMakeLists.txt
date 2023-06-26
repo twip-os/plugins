@@ -1,7 +1,6 @@
+cmake_minimum_required(VERSION 3.12...3.24)
+
 set(target_name usbtest)
-
-
-cmake_minimum_required(VERSION 3.1...3.15)
 
 option(BUILD_UNICODE "Build with unicode charset if set to ON, else multibyte charset." ON)
 option(BUILD_SHARED_LIBS "Build shared library." ON)
@@ -25,7 +24,7 @@ if(LibUSB_INCLUDE_DIRS)
                     endif(BUILD_UNICODE)
         add_definitions(-DCMAKE)
 
-                        
+
         # default build types are None, Debug, Release, RelWithDebInfo and MinRelSize
         if(DEFINED CMAKE_BUILD_TYPE)
             set(CMAKE_BUILD_TYPE ${CMAKE_BUILD_TYPE} CACHE STRING "Choose the type of build, options are: None(CMAKE_CXX_FLAGS or CMAKE_C_FLAGS used) Debug Release RelWithDebInfo MinSizeRel.")
@@ -38,7 +37,7 @@ if(LibUSB_INCLUDE_DIRS)
         link_directories(
             ${LIBUSB_API_DIR}/lib
         )
-        
+
         include_directories(
             ${CMAKE_CURRENT_BINARY_DIR}
             ${CMAKE_CURRENT_SOURCE_DIR}
@@ -48,7 +47,7 @@ if(LibUSB_INCLUDE_DIRS)
         set(PLUGIN_HEADERS
         )
 
-        set(PLUGIN_SOURCES 
+        set(PLUGIN_SOURCES
             ${CMAKE_CURRENT_SOURCE_DIR}/usbtest.cpp
         )
 
@@ -62,5 +61,5 @@ if(LibUSB_INCLUDE_DIRS)
     endif(WIN32)
 
 else(LibUSB_INCLUDE_DIRS)
-    message(WARNING "LibUSB_INCLUDE_DIRS directory could not be found. ${target_name} will not be build.")    
+    message(WARNING "LibUSB_INCLUDE_DIRS directory could not be found. ${target_name} will not be build.")
 endif(LibUSB_INCLUDE_DIRS)

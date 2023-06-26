@@ -1,8 +1,8 @@
 /* ********************************************************************
 Plugin "AVTVimba" for itom software
 URL : http ://www.uni-stuttgart.de/ito
-Copyright(C) 2016, Institut fuer Technische Optik (ITO), 
-                   Universitaet Stuttgart, Germany; 
+Copyright(C) 2016, Institut fuer Technische Optik (ITO),
+                   Universitaet Stuttgart, Germany;
                    IPROM, TU Braunschweig, Germany
 
 This file is part of a plugin for the measurement software itom.
@@ -35,7 +35,7 @@ using namespace AVT::VmbAPI;
 
 //----------------------------------------------------------------------------------------------------------------------------------
  /**
-  *\class    MyGrabberInterface 
+  *\class    MyGrabberInterface
   *
   *\brief    Interface-Class for MyGrabber-Class
   *
@@ -73,9 +73,9 @@ class AvtVimba : public ito::AddInGrabber
         ~AvtVimba();
         //! Constructor
         AvtVimba();
-        
+
         ito::RetVal retrieveData(ito::DataObject *externalDataObject = NULL); /*!< Wait for acquired picture */
-        
+
     public:
         friend class AvtVimbaInterface;
         const ito::RetVal showConfDialog(void);
@@ -136,7 +136,7 @@ class AvtVimba : public ito::AddInGrabber
 
         
 
-        
+
     public slots:
         //!< Get Camera-Parameter
         ito::RetVal getParam(QSharedPointer<ito::Param> val, ItomSharedSemaphore *waitCond);
@@ -157,7 +157,7 @@ class AvtVimba : public ito::AddInGrabber
         ito::RetVal getVal(void *vpdObj, ItomSharedSemaphore *waitCond);
 
         ito::RetVal copyVal(void *vpdObj, ItomSharedSemaphore *waitCond);
-        
+
         //checkData usually need not to be overwritten (see comments in source code)
         //ito::RetVal checkData(ito::DataObject *externalDataObject = NULL);
 
