@@ -1,6 +1,6 @@
-set(target_name dcraw)
+cmake_minimum_required(VERSION 3.12...3.24)
 
-cmake_minimum_required(VERSION 3.1...3.15)
+set(target_name dcraw)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${ITOM_SDK_DIR}/cmake)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -14,15 +14,14 @@ set(PLUGIN_HEADERS
     ${CMAKE_CURRENT_SOURCE_DIR}/dcraw.h
 )
 
-set(PLUGIN_SOURCES 
+set(PLUGIN_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/dcraw.c
 )
 
 add_executable(${target_name} ${PLUGIN_SOURCES} ${PLUGIN_HEADERS})
 
-if(WIN32) 
+if(WIN32)
     target_link_libraries(${target_name})
 else(WIN32)
     target_link_libraries(${target_name} m)
 endif(WIN32)
-

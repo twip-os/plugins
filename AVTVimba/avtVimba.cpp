@@ -44,7 +44,7 @@ along with itom.If not, see <http://www.gnu.org/licenses/>.
 */
 
 static char InitList[5] = {0, 0, 0, 0, 0};  /*!<A map with successfull initialized Cameras (max = 5) */
-static char Initnum = 0;    /*!< Number of successfull initialized Cameras */ 
+static char Initnum = 0;    /*!< Number of successfull initialized Cameras */
 
 AvtVimbaInterface::AvtVimbaInterface()
 {
@@ -69,7 +69,7 @@ Color formats are not supported.");
     m_minItomVer = MINVERSION;
     m_maxItomVer = MAXVERSION;
     m_license = QObject::tr("Licensed under LGPL");
-    m_aboutThis = QObject::tr(GITVERSION); 
+    m_aboutThis = QObject::tr(GITVERSION);
 
     //add mandatory and optional parameters for the initialization here.
     //append them to m_initParamsMand or m_initParamsOpt.
@@ -83,7 +83,7 @@ Color formats are not supported.");
 //----------------------------------------------------------------------------------------------------------------------------------
 //! Destructor of Interface Class.
 /*!
-    
+
 */
 AvtVimbaInterface::~AvtVimbaInterface()
 {
@@ -111,9 +111,9 @@ ito::RetVal AvtVimbaInterface::closeThisInst(ito::AddInBase **addInInst)
     \todo add internal parameters of the plugin to the map m_params. It is allowed to append or remove entries from m_params
     in this constructor or later in the init method
 */
-AvtVimba::AvtVimba() : 
-    AddInGrabber(), 
-    m_isgrabbing(false),  
+AvtVimba::AvtVimba() :
+    AddInGrabber(),
+    m_isgrabbing(false),
     m_camera(CameraPtr()),
     m_aliveTimer(NULL),
     m_aliveTimerThread(NULL)
@@ -198,10 +198,10 @@ AvtVimba::AvtVimba() :
 
     //the following lines create and register the plugin's dock widget. Delete these lines if the plugin does not have a dock widget.
     DockWidgetAvtVimba *dw = new DockWidgetAvtVimba(this);
-    
+
     Qt::DockWidgetAreas areas = Qt::AllDockWidgetAreas;
     QDockWidget::DockWidgetFeatures features = QDockWidget::DockWidgetClosable | QDockWidget::DockWidgetFloatable | QDockWidget::DockWidgetMovable;
-    createDockWidget(QString(m_params["name"].getVal<char *>()), features, areas, dw);   
+    createDockWidget(QString(m_params["name"].getVal<char *>()), features, areas, dw);
 }
 
 //----------------------------------------------------------------------------------------------------------------------------------
@@ -286,7 +286,7 @@ ito::RetVal AvtVimba::init(QVector<ito::ParamBase> *paramsMand, QVector<ito::Par
                     m_camera->GetName(name);
                     m_camera->GetSerialNumber(serialNumber);
                     m_camera->GetInterfaceID(DeviceID);
-                    
+
                     m_camera->GetInterfaceType(m_interfaceType);
 
                     QString identifier = QString::fromStdString(name) + " (" + QString::fromStdString(serialNumber) + ") @ " + QString::fromStdString(DeviceID);
@@ -302,7 +302,7 @@ ito::RetVal AvtVimba::init(QVector<ito::ParamBase> *paramsMand, QVector<ito::Par
                         v[i]->GetName(blub);
                         std::cout << blub.data() << "\n" << std::endl;
                     }*/
-                    
+
                     switch (m_interfaceType)
                     {
                     case VmbInterfaceEthernet:
@@ -617,13 +617,13 @@ ito::RetVal AvtVimba::init(QVector<ito::ParamBase> *paramsMand, QVector<ito::Par
   //          }
   //      }
     }
-        
-    
+
+
     if (!retValue.containsError())
-    {        
+    {
         retValue += checkData();
     }
-    
+
     if (!retValue.containsError())
     {
         emit parametersChanged(m_params);
@@ -637,7 +637,7 @@ ito::RetVal AvtVimba::init(QVector<ito::ParamBase> *paramsMand, QVector<ito::Par
         m_aliveTimerThread->start();
         connect(m_aliveTimer, SIGNAL(timeout()), this, SLOT(aliveTimer_fire()), Qt::DirectConnection);
     }
-    
+
     if (waitCond)
     {
         waitCond->returnValue = retValue;
@@ -657,13 +657,13 @@ ito::RetVal AvtVimba::close(ItomSharedSemaphore *waitCond)
 {
     ItomSharedSemaphoreLocker locker(waitCond);
     ito::RetVal retValue(ito::retOk);
-    
+
     //todo:
     // - disconnect the device if not yet done
     // - this funtion is considered to be the "inverse" of init.
 
     int nr = m_params["camera_number"].getVal<int>();
-    
+
 
     if (m_camera.get())
     {
@@ -675,7 +675,7 @@ ito::RetVal AvtVimba::close(ItomSharedSemaphore *waitCond)
     if (Initnum<1)
     {
         VimbaSystem& sys = VimbaSystem::GetInstance();
-    
+
 
         //shutdown API
         retValue += checkError(sys.Shutdown());
@@ -699,7 +699,7 @@ ito::RetVal AvtVimba::close(ItomSharedSemaphore *waitCond)
         waitCond->returnValue = retValue;
         waitCond->release();
     }
-    
+
     return retValue;
 }
 
@@ -832,7 +832,7 @@ ito::RetVal AvtVimba::setDblFeature(const char *name, const double &fValue)
             if (!retValue.containsError())
             {
                 //std::cout << "Feature " << name << " set to " << fValue << std::endl;
-            }    
+            }
         }
     return retValue;
 }
@@ -851,7 +851,7 @@ ito::RetVal AvtVimba::setIntFeature(const char *name, const int &iValue)
             if (!retValue.containsError())
             {
                 //std::cout << "Feature " << name << " set to " << iValue << std::endl;
-            }    
+            }
         }
     return retValue;
 }
@@ -868,7 +868,7 @@ ito::RetVal AvtVimba::setEnumFeature(const char *name, const char *eValue)
         {
             retValue += checkError(pFeature->SetValue(eValue), name);
         }
-    
+
     return retValue;
 }
 
@@ -884,7 +884,7 @@ ito::RetVal AvtVimba::setEnumFeature(const char *name, VmbInt64_t value)
         {
             retValue += checkError(pFeature->SetValue(value), name);
         }
-    
+
     return retValue;
 }
 
@@ -952,7 +952,7 @@ ito::RetVal AvtVimba::getParam(QSharedPointer<ito::Param> val, ItomSharedSemapho
                 retValue+= it->setVal<double>(tmpDouble);
             }
         }
-         
+
         //finally, save the desired value in the argument val (this is a shared pointer!)
         *val = it.value();
     }
@@ -1101,7 +1101,7 @@ ito::RetVal AvtVimba::setParam(QSharedPointer<ito::ParamBase> val, ItomSharedSem
             retValue += setEnumFeature("TriggerActivation", val->getVal<char*>());
             retValue += synchronizeParameters(fTrigger);
         }
-        
+
         else if (key == "roi")
         {
             if (!hasIndex)
@@ -1119,7 +1119,7 @@ ito::RetVal AvtVimba::setParam(QSharedPointer<ito::ParamBase> val, ItomSharedSem
                 {
                     //offset is increased, decrease width at first, then increase offset
                     retValue += setIntFeature("Width", roi[2]);
-                    retValue += setIntFeature("OffsetX", roi[0]);  
+                    retValue += setIntFeature("OffsetX", roi[0]);
                 }
 
                 if (old_roi[1] >= roi[1])
@@ -1217,14 +1217,14 @@ ito::RetVal AvtVimba::startDevice(ItomSharedSemaphore *waitCond)
 {
     ItomSharedSemaphoreLocker locker(waitCond);
     ito::RetVal retValue(ito::retOk);
-    
+
     incGrabberStarted(); //increment a counter to see how many times startDevice has been called
 
     /*if (grabberStartedCount() == 1)
     {
         retValue += checkError(m_camera->StartCapture());
     }*/
-    
+
     if (waitCond)
     {
         waitCond->returnValue = retValue;
@@ -1232,7 +1232,7 @@ ito::RetVal AvtVimba::startDevice(ItomSharedSemaphore *waitCond)
     }
     return retValue;
 }
-         
+
 //----------------------------------------------------------------------------------------------------------------------------------
 ito::RetVal AvtVimba::stopDevice(ItomSharedSemaphore *waitCond)
 {
@@ -1258,7 +1258,7 @@ ito::RetVal AvtVimba::stopDevice(ItomSharedSemaphore *waitCond)
     }
     return ito::retOk;
 }
-         
+
 //----------------------------------------------------------------------------------------------------------------------------------
 ito::RetVal AvtVimba::acquire(const int trigger, ItomSharedSemaphore *waitCond)
 {
@@ -1285,10 +1285,10 @@ ito::RetVal AvtVimba::acquire(const int trigger, ItomSharedSemaphore *waitCond)
     if (waitCond)
     {
         waitCond->returnValue = retValue;
-        waitCond->release();  
+        waitCond->release();
     }
     VmbFrameStatusType status = VmbFrameStatusIncomplete;
-    
+
     if (timeoutMS > 2000)
     {
         QMetaObject::invokeMethod(m_aliveTimer, "start");
@@ -1340,7 +1340,7 @@ ito::RetVal AvtVimba::retrieveData(ito::DataObject *externalDataObject)
             {
                 retValue += checkData(externalDataObject);
             }
-        
+
             if (!retValue.containsError())
             {
                 VmbUint32_t frameImgSize, bufferHeight, bufferWidth;
@@ -1369,7 +1369,7 @@ ito::RetVal AvtVimba::retrieveData(ito::DataObject *externalDataObject)
                     }
                     if (!copyExternal || hasListeners)
                     {
-                        retValue += m_data.copyFromData2D<ito::uint16>((ito::uint16*) bufferPtr, bufferWidth, bufferHeight);            
+                        retValue += m_data.copyFromData2D<ito::uint16>((ito::uint16*) bufferPtr, bufferWidth, bufferHeight);
                     }
                 }
                 else
@@ -1407,16 +1407,16 @@ ito::RetVal AvtVimba::retrieveData(ito::DataObject *externalDataObject)
 //----------------------------------------------------------------------------------------------------------------------------------
 //! Returns the grabbed camera frame as reference.
 /*!
-    This method returns a reference to the recently acquired image. Therefore this camera size must fit to the data structure of the 
+    This method returns a reference to the recently acquired image. Therefore this camera size must fit to the data structure of the
     DataObject.
-    
+
     This method returns a reference to the internal dataObject m_data of the camera where the currently acquired image data is copied to (either
     in the acquire method or in retrieve data). Please remember, that the reference may directly change if a new image is acquired.
 
     \param [in,out] vpdObj is the pointer to a given dataObject (this pointer should be cast to ito::DataObject*). After the call, the dataObject is a reference to the internal m_data dataObject of the camera.
     \param [in] waitCond is the semaphore (default: NULL), which is released if this method has been terminated
     \return retOk if everything is ok, retError is camera has not been started or no image has been acquired by the method acquire.
-    
+
     \sa retrieveImage, copyVal
 */
 ito::RetVal AvtVimba::getVal(void *vpdObj, ItomSharedSemaphore *waitCond)
@@ -1424,7 +1424,7 @@ ito::RetVal AvtVimba::getVal(void *vpdObj, ItomSharedSemaphore *waitCond)
     ItomSharedSemaphoreLocker locker(waitCond);
     ito::RetVal retValue(ito::retOk);
     ito::DataObject *dObj = reinterpret_cast<ito::DataObject *>(vpdObj);
-    
+
     //call retrieveData without argument. Retrieve data should then put the currently acquired image into the dataObject m_data of the camera.
     retValue += retrieveData();
 
@@ -1439,7 +1439,7 @@ ito::RetVal AvtVimba::getVal(void *vpdObj, ItomSharedSemaphore *waitCond)
         }
     }
 
-    if (waitCond) 
+    if (waitCond)
     {
         waitCond->returnValue = retValue;
         waitCond->release();
@@ -1451,8 +1451,8 @@ ito::RetVal AvtVimba::getVal(void *vpdObj, ItomSharedSemaphore *waitCond)
 //----------------------------------------------------------------------------------------------------------------------------------
 //! Returns the grabbed camera frame as a deep copy.
 /*!
-    This method copies the recently grabbed camera frame to the given DataObject. 
-    
+    This method copies the recently grabbed camera frame to the given DataObject.
+
     The given dataObject must either have an empty size (then it is resized to the size and type of the camera image) or its size or adjusted region of
     interest must exactly fit to the size of the camera. Then, the acquired image is copied inside of the given region of interest (copy into a subpart of
     an image stack is possible then)
@@ -1460,7 +1460,7 @@ ito::RetVal AvtVimba::getVal(void *vpdObj, ItomSharedSemaphore *waitCond)
     \param [in,out] vpdObj is the pointer to a given dataObject (this pointer should be cast to ito::DataObject*) where the acquired image is deep copied to.
     \param [in] waitCond is the semaphore (default: NULL), which is released if this method has been terminated
     \return retOk if everything is ok, retError is camera has not been started or no image has been acquired by the method acquire.
-    
+
     \sa retrieveImage, getVal
 */
 ito::RetVal AvtVimba::copyVal(void *vpdObj, ItomSharedSemaphore *waitCond)
@@ -1468,12 +1468,12 @@ ito::RetVal AvtVimba::copyVal(void *vpdObj, ItomSharedSemaphore *waitCond)
     ItomSharedSemaphoreLocker locker(waitCond);
     ito::RetVal retValue(ito::retOk);
     ito::DataObject *dObj = reinterpret_cast<ito::DataObject *>(vpdObj);
-    
+
     if (!dObj)
     {
         retValue += ito::RetVal(ito::retError, 0, tr("Empty object handle retrieved from caller").toLatin1().data());
     }
-    
+
     if (!retValue.containsError())
     {
         //this method calls retrieveData with the passed dataObject as argument such that retrieveData is able to copy the image obtained
@@ -1486,13 +1486,13 @@ ito::RetVal AvtVimba::copyVal(void *vpdObj, ItomSharedSemaphore *waitCond)
         //send newly acquired image to possibly connected live images
         sendDataToListeners(0); //don't wait for live data, since user should get the data as fast as possible.
     }
-    
-    if (waitCond) 
+
+    if (waitCond)
     {
         waitCond->returnValue = retValue;
         waitCond->release();
     }
-    
+
     return retValue;
 }
 
@@ -1528,17 +1528,17 @@ void AvtVimba::dockWidgetVisibilityChanged(bool visible)
     If the instance of the configuration dialog has been created, its slot 'parametersChanged' is connected to the signal 'parametersChanged'
     of the plugin. By invoking the slot sendParameterRequest of the plugin, the plugin's signal parametersChanged is immediately emitted with
     m_params as argument. Therefore the configuration dialog obtains the current set of parameters and can be adjusted to its values.
-    
+
     The configuration dialog should emit reject() or accept() depending if the user wanted to close the dialog using the ok or cancel button.
     If ok has been clicked (accept()), this method calls applyParameters of the configuration dialog in order to force the dialog to send
     all changed parameters to the plugin. If the user clicks an apply button, the configuration dialog itsself must call applyParameters.
-    
+
     If the configuration dialog is inherited from AbstractAddInConfigDialog, use the api-function apiShowConfigurationDialog that does all
     the things mentioned in this description.
-    
+
     Remember that you need to implement hasConfDialog in your plugin and return 1 in order to signalize itom that the plugin
     has a configuration dialog.
-    
+
     \sa hasConfDialog
 */
 const ito::RetVal AvtVimba::showConfDialog(void)
@@ -1652,7 +1652,7 @@ ito::RetVal AvtVimba::synchronizeParameters(int features)
                 m_params["binning"].setVal<int>(binH*100+binV);
                 m_params["binning"].setFlags(0);
             }
-        }            
+        }
 
         retval += ret_;
     }
