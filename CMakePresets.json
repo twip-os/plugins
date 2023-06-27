@@ -47,6 +47,7 @@
                 "ITOM_3RDPARTYFOLDER": "${sourceDir}/../../3rdParty",
                 "ITOM_3RDPARTYPCLFOLDER": "${sourceDir}/../../3rdPartyPCL",
                 "XIMEA_APIDIR": "C:/XIMEA/API/xiAPI",
+                "XIMEA_SDK_VERSION": "4.24.03",
                 "PLUGIN_PGRFlyCapture": true,
                 "FLYCAPTURE_PGRFLYCAP_INCLUDE_DIR": "C:/Program Files/Point Grey Research/FlyCapture2/include"
             }
