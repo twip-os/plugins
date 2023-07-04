@@ -309,7 +309,7 @@ ito::RetVal ThorlabsPowerMeter::init(QVector<ito::ParamBase> *paramsMand, QVecto
             //status = viOpen(resMgr, deviceName.toLatin1().data(), VI_EXCLUSIVE_LOCK, 2000, &m_instrument);
 
             //try to open device
-            status = PM(init)(deviceName.toLatin1().data(), VI_OFF, VI_OFF, &m_instrument);
+            status = PM(init)(deviceName.toLatin1().data(), VI_ON, VI_ON, &m_instrument);
 #if defined(USE_API_DEP_3_0_2)
             if (status != VI_SUCCESS && status != VI_WARN_CONFIG_NLOADED)
             {
