@@ -12,6 +12,7 @@
                 "PLUGIN_FFTWFilters": false,
                 "PLUGIN_Holography": false,
                 "PLUGIN_LIBUSB": false,
+                "PLUGIN_NEWPORT_CONEXLDS": false,
                 "PLUGIN_OceanOpticsSpec": false,
                 "PLUGIN_OpenCVGrabber": false,
                 "PLUGIN_QuantumComposer": false,
