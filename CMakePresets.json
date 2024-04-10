@@ -18,7 +18,8 @@
                 "PLUGIN_QuantumComposer": false,
                 "PLUGIN_rawImport": false,
                 "PLUGIN_x3pio": false,
-                "Boost_NO_WARN_NEW_VERSIONS": true
+                "Boost_NO_WARN_NEW_VERSIONS": true,
+                "THORLABS_PM100D_VISA_DIR": "C:/Program Files/IVI Foundation/VISA/Win64"
             }
         },
         {
