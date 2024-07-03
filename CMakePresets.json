@@ -31,7 +31,7 @@
             "displayName": "Develop Windows",
             "inherits": "twip_common",
             "description": "Sets Visual Studio generator. With PCL.",
-            "generator": "Visual Studio 16 2019",
+            "generator": "Visual Studio 17 2022",
             "cacheVariables": {
                 "BUILD_WITH_PCL": true,
                 "ITOM_3RDPARTYFOLDER": "${sourceDir}/../../3rdParty",
@@ -47,7 +47,7 @@
             "displayName": "twip API",
             "inherits": "twip_common",
             "description": "Sets Visual Studio generator. Without PCL.",
-            "generator": "Visual Studio 16 2019",
+            "generator": "Visual Studio 17 2022",
             "cacheVariables": {
                 "BUILD_WITH_PCL": false,
                 "ITOM_3RDPARTYFOLDER": "${sourceDir}/../../3rdParty",
