@@ -49,7 +49,7 @@ NewportConexLDSInterface::NewportConexLDSInterface()
 
     m_description = QObject::tr("NewportConexLDS");
     char docstring[] =
-        "NewportConexLDS is an itom-plugin to use the Newport Conex-LDS autocollimator.\n\
+"NewportConexLDS is an itom-plugin to use the Newport Conex-LDS autocollimator.\n\
 For further information go to: https://www.newport.com/p/CONEX-LDS\n\
 \n\
 This plugin has been developed using SerialIO interface with following default parameters:\n\
@@ -66,9 +66,9 @@ endline    \\r\\n\n\
 
     m_author = PLUGIN_AUTHOR;
     m_version = PLUGIN_VERSION;
-    m_minItomVer = MINVERSION;
-    m_maxItomVer = MAXVERSION;
-    m_license = QObject::tr("licensed under LGPL");
+    m_minItomVer = PLUGIN_MIN_ITOM_VERSION;
+    m_maxItomVer = PLUGIN_MAX_ITOM_VERSION;
+    m_license = QObject::tr(PLUGIN_LICENCE);
     m_aboutThis = QObject::tr(GITVERSION);
 
     ito::Param paramVal(
@@ -849,7 +849,7 @@ ito::RetVal NewportConexLDS::setParam(
 
     if (config != CONFIGURATION)
     {
-        if (!(key == "laserPowerState" or key == "enableConfiguration"))
+        if (!(key == "laserPowerState" || key == "enableConfiguration"))
         {
             retValue += ito::RetVal(
                 ito::retError,
@@ -880,7 +880,7 @@ ito::RetVal NewportConexLDS::setParam(
             }
 
             int state = val->getVal<int>();
-            if (!(state and config == MEASURE))
+            if (!(state && config == MEASURE))
             {
                 if (!retValue.containsError())
                 {
@@ -1046,7 +1046,7 @@ ito::RetVal NewportConexLDS::readString(QByteArray& result, int& len)
     {
         len = 0;
         timer.start();
-        _sleep(m_delayAfterSendCommandMS);
+        QThread::msleep(m_delayAfterSendCommandMS);
 
         while (!done && !retValue.containsError())
         {
@@ -1151,7 +1151,7 @@ ito::RetVal NewportConexLDS::sendQuestionWithAnswerDoubleArray(
     int n = 0;
     QRegularExpressionMatch match;
     QString matchedValue;
-    while (matchIterator.hasNext() and ok)
+    while (matchIterator.hasNext() && ok)
     {
         match = matchIterator.next();
         matchedValue = match.captured();
@@ -1405,7 +1405,7 @@ ito::RetVal NewportConexLDS::getCalibrationCoefficients(ito::float64* calibratio
         retVal += ito::RetVal(
             ito::retError,
             0,
-            tr("Error during getting calibration coeffients values.").toUtf8().data());
+            tr("Error during getting calibration coefficients values.").toUtf8().data());
     }
 
     return retVal;
@@ -1548,7 +1548,7 @@ ito::RetVal NewportConexLDS::setLaserPowerState(const int state)
         QString::number(m_controllerAddress).toUtf8() + "LB" + QString::number(state).toUtf8();
     retVal += sendCommand(sendStr);
 
-    _sleep(5000);
+    QThread::msleep(5000);
     setAlive();
 
     QString error;
@@ -1754,7 +1754,7 @@ ito::RetVal NewportConexLDS::setConfigurationState(const int& state)
 
     if (!state)
     {
-        _sleep(5000);
+        QThread::msleep(5000);
         setAlive();
     }
 

@@ -18,7 +18,12 @@
                 "PLUGIN_QuantumComposer": false,
                 "PLUGIN_rawImport": false,
                 "PLUGIN_x3pio": false,
-                "Boost_NO_WARN_NEW_VERSIONS": true
+                "PLUGIN_aerotechEnsemble": false,
+                "PLUGIN_AvantesAvaSpec": false,
+                "PLUGIN_UhlRegister": false,
+                "PLUGIN_UhlText": false,
+                "Boost_NO_WARN_NEW_VERSIONS": true,
+                "THORLABS_PM100D_VISA_DIR": "C:/Program Files/IVI Foundation/VISA/Win64"
             }
         },
         {
@@ -26,7 +31,7 @@
             "displayName": "Develop Windows",
             "inherits": "twip_common",
             "description": "Sets Visual Studio generator. With PCL.",
-            "generator": "Visual Studio 16 2019",
+            "generator": "Visual Studio 17 2022",
             "cacheVariables": {
                 "BUILD_WITH_PCL": true,
                 "ITOM_3RDPARTYFOLDER": "${sourceDir}/../../3rdParty",
@@ -42,7 +47,7 @@
             "displayName": "twip API",
             "inherits": "twip_common",
             "description": "Sets Visual Studio generator. Without PCL.",
-            "generator": "Visual Studio 16 2019",
+            "generator": "Visual Studio 17 2022",
             "cacheVariables": {
                 "BUILD_WITH_PCL": false,
                 "ITOM_3RDPARTYFOLDER": "${sourceDir}/../../3rdParty",
