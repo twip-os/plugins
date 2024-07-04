@@ -64,7 +64,10 @@
             "inherits": "twip_common",
             "description": "Sets Ninja generator and disables debug postfix.",
             "generator": "Ninja",
+            "binaryDir": "${sourceDir}/buildroot-build",
             "cacheVariables": {
+                "BUILD_WITH_PCL": false,
+                "BUILD_GIT_TAG": false,
                 "CMAKE_DEBUG_POSTFIX": {
                     "type": "STRING",
                     "value": ""
