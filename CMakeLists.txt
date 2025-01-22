@@ -33,8 +33,6 @@ message(
 
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${ITOM_SDK_DIR}/cmake)
-find_package(ITOM_SDK COMPONENTS dataobject itomCommonLib itomCommonQtLib itomWidgets REQUIRED)
-include(ItomBuildMacros)
 set(ITOM_3RDPARTYFOLDER CACHE PATH 
     "Path to the AIO 3rdParty Folder, containing cmake_scripts/itom_3rdParty.cmake")
 if(ITOM_3RDPARTYFOLDER)
@@ -45,6 +43,9 @@ set(ITOM_3RDPARTYPCLFOLDER CACHE PATH
 if(ITOM_3RDPARTYPCLFOLDER)
     include(${ITOM_3RDPARTYPCLFOLDER}/cmake/itom_3rdPartyPCL.cmake)
 endif()
+
+find_package(ITOM_SDK COMPONENTS dataobject itomCommonLib itomCommonQtLib itomWidgets REQUIRED)
+include(ItomBuildMacros)
 
 # PLUGIN BUILD OPTIONS
 set(PLUGIN_BUILD_OPTION "default" CACHE STRING "If ITOM plugin build options: default, setup, test")
