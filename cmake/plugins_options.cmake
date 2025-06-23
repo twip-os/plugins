@@ -5,7 +5,7 @@ macro(itom_plugin_option PLUGIN_ID)
     "+-------------------------------+-----------------------------------+"
     "| **Plugin**                    |  Win  | macOS | Ubu2404 | Rasbian |"
     "+===============================+===================================+"
-    "| PLUGIN_LIBUSB                 |   D   |   D   |    D    |    D    |"
+    "| PLUGIN_LIBUSB                 |   S   |   D   |    D    |    D    |"
     "+-------------------------------+-----------------------------------+"
     "| PLUGIN_aerotechA3200          |   T   |   X   |    X    |    X    |"
     "+-------------------------------+-----------------------------------+"
@@ -159,6 +159,10 @@ macro(itom_plugin_option PLUGIN_ID)
     "+-------------------------------+-----------------------------------+"
     "| PLUGIN_ThorlabsDCxCam         |   T   |   X   |    X    |    X    |"
     "+-------------------------------+-----------------------------------+"
+    "| PLUGIN_ThorlabsDHM            |   T   |   X   |    X    |    X    |"
+    "+-------------------------------+-----------------------------------+"
+"    | PLUGIN_ThorlabsElliptec       |   D   |   D   |    D    |    D    |"
+    "+-------------------------------+-----------------------------------+"
     "| PLUGIN_ThorlabsPowerMeter     |   S   |   X   |    X    |    X    |"
     "+-------------------------------+-----------------------------------+"
     "| PLUGIN_UhlRegister            |   D   |   D   |    D    |    D    |"
@@ -179,6 +183,7 @@ macro(itom_plugin_option PLUGIN_ID)
 )
 
     set(PATTERN "${PLUGIN_ID}.*$")
+    set(FOUND 0)
 
     # get column index
     if(WIN32)
@@ -197,6 +202,7 @@ macro(itom_plugin_option PLUGIN_ID)
             string(REPLACE "|" ";" SPLIT_LIST "${MATCHSTRING}")
             list(GET SPLIT_LIST ${INDEX} ELEMENT)
             string(STRIP "${ELEMENT}" VALUE)
+            set(FOUND 1)
 
             # case DEFAULT
             if(PLUGIN_BUILD_OPTION STREQUAL "default" AND VALUE STREQUAL "D")
@@ -214,4 +220,9 @@ macro(itom_plugin_option PLUGIN_ID)
             endif()
         endif(MATCHSTRING)
     endforeach()
+
+    if (NOT FOUND)
+        message(WARNING "The plugin ${PLUGIN_ID} is not listed in plugins_options.cmake (method itom_plugin_option). Add it there or create your
+            own option ${PLUGIN_ID}.")
+    endif()
 endmacro()

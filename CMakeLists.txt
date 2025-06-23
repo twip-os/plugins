@@ -87,7 +87,7 @@ endif(BUILD_QTVERSION STREQUAL "Qt5")
 # AvantesAvaSpec
 itom_plugin_option(PLUGIN_AvantesAvaSpec)
 if(PLUGIN_AvantesAvaSpec AND PLUGIN_LIBUSB)
-        add_subdirectory(AvantesAvaSpec)
+    add_subdirectory(AvantesAvaSpec)
 endif(PLUGIN_AvantesAvaSpec AND PLUGIN_LIBUSB)
 
 # AVTVimba
@@ -477,12 +477,10 @@ if(PLUGIN_ThorlabsBDCServo)
 endif(PLUGIN_ThorlabsBDCServo)
 
 # ThorlabsFF High-Stroke Deformable Mirrors
-if(WIN32)
-    option(PLUGIN_ThorlabsDMH "Build the Thorlabs High-Stroke Deformable Mirrors plugin." ${ITOM_BUILD_SHIPMENT})
-    if(PLUGIN_ThorlabsDMH)
-        add_subdirectory(ThorlabsDMH)
-    endif(PLUGIN_ThorlabsDMH)
-endif()
+itom_plugin_option(PLUGIN_ThorlabsDHM)
+if(PLUGIN_ThorlabsDHM)
+    add_subdirectory(ThorlabsDMH)
+endif(PLUGIN_ThorlabsDHM)
 
 # ThorlabsFF filter flipper
 itom_plugin_option(PLUGIN_ThorlabsFF)
@@ -537,6 +535,12 @@ itom_plugin_option(PLUGIN_ThorlabsPowerMeter)
 if(PLUGIN_ThorlabsPowerMeter)
     add_subdirectory(ThorlabsPowerMeter)
 endif(PLUGIN_ThorlabsPowerMeter)
+
+# Thorlabs Elliptec piezoelectric resonant motor technology
+itom_plugin_option(PLUGIN_ThorlabsElliptec)
+if(PLUGIN_ThorlabsElliptec)
+    add_subdirectory(ThorlabsElliptec)
+endif(PLUGIN_ThorlabsElliptec)
 
 # UhlRegister
 itom_plugin_option(PLUGIN_UhlRegister)
