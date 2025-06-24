@@ -4,6 +4,14 @@ URL: http://www.uni-stuttgart.de/ito
 Copyright (C) 2018, Institut für Technische Optik (ITO),,
 Universität Stuttgart, Germany
 
+Modified by twip optical solutions GmbH (https://www.twip-os.com). The modifications are
+listed below and the whole project is hosted on https://github.com/twip-os/plugins.
+The original version of this software can be found at
+https://github.com/itom-project/plugins.
+
+The modified software is still subject to the terms of the GNU Lesser General Public
+License (LGPL), version 2.0.
+
 This file is part of itom and its software development toolkit (SDK).
 
 itom is free software; you can redistribute it and/or modify it
@@ -23,6 +31,9 @@ General Public Licence for more details.
 
 You should have received a copy of the GNU Library General Public License
 along with itom. If not, see <http://www.gnu.org/licenses/>.
+
+Modifications:
+04.07.2023  Changing init arguments.
 *********************************************************************** */
 
 #define ITOM_IMPORT_API

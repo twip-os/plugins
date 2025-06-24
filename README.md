@@ -1,4 +1,4 @@
-# plugins
+# twip itom plugins
 
 [![Generic badge](https://img.shields.io/badge/powered%20by-ITO-blue)](https://www.ito.uni-stuttgart.de/)
 [![License: LGPL v3](https://img.shields.io/badge/License-LGPL_v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0)
@@ -6,6 +6,22 @@
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
 [![made-with-opencv](https://img.shields.io/badge/Made%20by-OpenCV-green)](https://opencv.org/)
 [![made-with-qt](https://img.shields.io/badge/Made%20by-Qt-brightgreen)](https://www.qt.io/product/framework)
+
+
+This software is a modified version of the plugins for the itom measurement program. The
+modifications were made by [twip optical solutions GmbH](https://www.twip-os.com).
+
+The original version of this software can be found at
+[https://github.com/itom-project/plugins](https://github.com/itom-project/plugins).
+
+The modified library is still subject to the terms of the GNU Lesser General Public
+License (LGPL), version 2.0. Files that are contained in the itom SDK further are
+subject to the **itom exception**, which can be found in the document
+[COPYING.txt](https://github.com/itom-project/itom/blob/master/COPYING.txt) in the
+[main itom project](https://github.com/itom-project/itom).
+
+
+## Description Of The Original Project
 
 Welcome to the open source software [``itom``](https://itom-project.github.io/ "``itom``"). In addition to a [Python](https://www.python.org/ "Python") IDE, it enables the operation of **measurement systems** with multiple **hardware components**, such as cameras, AD converters, actuators, motor stages, and the management of your laboratory automation. The **graphical user interface provides** a quick and easy access to all components, complex measurement tasks and algorithms can be scripted using the embedded python scripting language and self-defined user interfaces finally provide a possibility to adapt [``itom``](https://itom-project.github.io/ "``itom``")to your special needs. External hardware or algorithms are added to [``itom``](https://itom-project.github.io/ "``itom``") by an integrated plugin system.
 

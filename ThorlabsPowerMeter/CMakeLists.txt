@@ -1,3 +1,15 @@
+# Modified by twip optical solutions GmbH (https://www.twip-os.com). The modifications
+# are listed below and the whole project is hosted on
+# https://github.com/twip-os/plugins.
+# The original version of this software can be found at
+# https://github.com/itom-project/plugins.
+#
+# The modified software is still subject to the terms of the GNU Lesser General Public
+# License (LGPL), version 2.0.
+#
+# Modifications:
+# 25.08.2021    Fix to copy power meter dll to itom lib folder.
+
 cmake_minimum_required(VERSION 3.12...3.29)
 set(target_name ThorlabsPowerMeter)
 

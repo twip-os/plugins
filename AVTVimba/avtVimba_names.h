@@ -1,9 +1,13 @@
 /* ********************************************************************
 Plugin "AVTVimba" for itom software
 URL : http ://www.uni-stuttgart.de/ito
-Copyright(C) 2016, Institut fuer Technische Optik (ITO),
-                   Universitaet Stuttgart, Germany;
-                   IPROM, TU Braunschweig, Germany
+Copyright(C) 2025, twip optical solutions GmbH, Germany
+
+Created by twip optical solutions GmbH (https://www.twip-os.com) to expand the the
+avtVimba plugin for itom. The whole project is hosted on
+https://github.com/twip-os/plugins.
+The original version of this plugin can be found at
+https://github.com/itom-project/plugins.
 
 This file is part of a plugin for the measurement software itom.
 

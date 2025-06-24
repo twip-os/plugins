@@ -108,9 +108,6 @@ if(XIMEA_SDK_FOUND)
 
 if(WIN32)
     file(GLOB_RECURSE dlls "${XIMEA_SDK_BINARY_DIR}/*.dll")
-    if (WIN32 AND (NOT dlls))
-        file(GLOB dlls "${XIMEA_APIDIR}/*.dll")
-    endif()
     itom_post_build_copy_files_to_lib_folder(${target_name} dlls)
 endif(WIN32)
 

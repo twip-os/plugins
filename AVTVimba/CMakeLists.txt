@@ -1,3 +1,14 @@
+# Modified by twip optical solutions GmbH (https://www.twip-os.com). The modifications
+# are listed below and the whole project is hosted on https://github.com/twip-os/itom.
+# The original version of this software can be found at
+# https://github.com/itom-project/itom.
+#
+# The modified software is still subject to the terms of the GNU Lesser General Public
+# License (LGPL), version 2.0.
+#
+# Modifications:
+# 18.02.2022  Adapting for USB cameras.
+
 cmake_minimum_required(VERSION 3.12...3.29)
 set(target_name AVTVimba)
 

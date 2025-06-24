@@ -1,3 +1,17 @@
+# Modified by twip optical solutions GmbH (https://www.twip-os.com). The modifications
+# are listed below and the whole project is hosted on
+# https://github.com/twip-os/plugins.
+# The original version of this software can be found at
+# https://github.com/itom-project/plugins.
+#
+# The modified software is still subject to the terms of the GNU Lesser General Public
+# License (LGPL), version 2.0.
+#
+# Modifications:
+# 22.06.2020    Added support for 3rdParty folders.
+# 22.07.2022    Fix HINTS in find_path(ITOM_SDK_DIR).
+# 03.07.2024    Updated paths to 3rdParty folders.
+
 cmake_minimum_required(VERSION 3.12...3.29)
 
 #this is to automatically detect the SDK subfolder of the itom build directory.
@@ -33,12 +47,12 @@ message(
 
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR} ${ITOM_SDK_DIR}/cmake)
-set(ITOM_3RDPARTYFOLDER CACHE PATH 
+set(ITOM_3RDPARTYFOLDER CACHE PATH
     "Path to the AIO 3rdParty Folder, containing cmake_scripts/itom_3rdParty.cmake")
 if(ITOM_3RDPARTYFOLDER)
     include(${ITOM_3RDPARTYFOLDER}/cmake_scripts/itom_3rdParty.cmake)
 endif()
-set(ITOM_3RDPARTYPCLFOLDER CACHE PATH 
+set(ITOM_3RDPARTYPCLFOLDER CACHE PATH
     "Path to the AIO 3rdPartyPCL Folder, containing cmake/itom_3rdPartyPCL.cmake")
 if(ITOM_3RDPARTYPCLFOLDER)
     include(${ITOM_3RDPARTYPCLFOLDER}/cmake/itom_3rdPartyPCL.cmake)

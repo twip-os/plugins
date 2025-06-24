@@ -5,6 +5,14 @@ Copyright(C) 2016, Institut für Technische Optik (ITO),
 Universität Stuttgart, Germany;
 IPROM, TU Braunschweig, Germany
 
+Modified by twip optical solutions GmbH (https://www.twip-os.com). The modifications are
+listed below and the whole project is hosted on https://github.com/twip-os/plugins.
+The original version of this software can be found at
+https://github.com/itom-project/plugins.
+
+The modified software is still subject to the terms of the GNU Lesser General Public
+License (LGPL), version 2.0.
+
 This file is part of a plugin for the measurement software itom.
 
 This itom - plugin is free software; you can redistribute it and / or modify it
@@ -19,6 +27,9 @@ General Public Licence for more details.
 
 You should have received a copy of the GNU Library General Public License
 along with itom.If not, see <http://www.gnu.org/licenses/>.
+
+Modifications:
+18.02.2022  Adapting for USB cameras.
 *********************************************************************** */
 
 #define ITOM_IMPORT_API
@@ -578,6 +589,7 @@ ito::RetVal AvtVimba::init(QVector<ito::ParamBase> *paramsMand, QVector<ito::Par
                             }
                         }
                     }
+
                     m_params["trigger_activation"].setMeta(sm, true);
                 }
 
