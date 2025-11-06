@@ -402,6 +402,9 @@ PGRFlyCapture::PGRFlyCapture() :
         tr("With some cameras, parameter changes like the exposure time or gain will only take effect x images after the change. If this parameter is set to > 0, the given number of images are acquired after changing any parameter in order to delete the intermediate images.").toLatin1().data());
     m_params.insert(paramVal.getName(), paramVal);
 
+    paramVal = ito::Param("reference", ito::ParamBase::DObjPtr, nullptr, "TODO");
+    m_params.insert(paramVal.getName(), paramVal);
+
     if (hasGuiSupport())
     {
         //now create dock widget for this plugin
@@ -785,6 +788,9 @@ ito::RetVal PGRFlyCapture::setParam(QSharedPointer<ito::ParamBase> val, ItomShar
 
             retValue += flyCapSynchronizeFrameRateShutter();
             m_pendingIdleGrabs = true;
+
+            ito::DataObject tmpScaled = this->m_reference * (val->getVal<double>() * 1000);
+            tmpScaled.convertTo(this->m_refScaled, ito::tUInt16);
         }
         else if (key == "gain")
         {
@@ -1054,6 +1060,21 @@ ito::RetVal PGRFlyCapture::setParam(QSharedPointer<ito::ParamBase> val, ItomShar
         else if (key == "bpp")
         {
             retValue += flyCapChangeFormat7_(true, false, val->getVal<int>());
+        }
+        else if (key == "reference")
+        {
+            ito::DataObject* obj = static_cast<ito::DataObject*>(val->getVal<void*>());
+            if (obj)
+            {
+                obj->copyTo(this->m_reference);
+                ito::DataObject tmpScaled =
+                    this->m_reference * (m_params["integration_time"].getVal<double>() * 1000);
+                tmpScaled.convertTo(this->m_refScaled, ito::tUInt16);
+            }
+            else
+            {
+                this->m_reference = ito::DataObject();
+            }
         }
         else
         {
@@ -2375,6 +2396,25 @@ ito::RetVal PGRFlyCapture::retrieveData(ito::DataObject *externalDataObject)
                 m_data.setTag("roi_y0", metadata.embeddedROIPosition & 0x0000ffff);
             }
         }
+        if (!retValue.containsError())
+        {
+            if (this->m_reference.getDims())
+            {
+                if (copyExternal)
+                {
+                    cv::Mat overexposed = *externalDataObject->getCvPlaneMat(0) == 4095;
+                    *externalDataObject -= m_refScaled;
+                    externalDataObject->getCvPlaneMat(0)->setTo(4095, overexposed);
+                }
+                if (!copyExternal || hasListeners)
+                {
+                    cv::Mat overexposed = *m_data.getCvPlaneMat(0) == 4095;
+                    m_data -= m_refScaled;
+                    m_data.getCvPlaneMat(0)->setTo(4095, overexposed);
+                }
+            }
+        }
+
 
         this->m_isgrabbing = false;
     }

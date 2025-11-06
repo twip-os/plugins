@@ -125,6 +125,9 @@ class PGRFlyCapture : public ito::AddInGrabber
         FlyCapture2::Image m_imageBuffer;
         double m_firstTimestamp;
 
+        ito::DataObject m_reference;
+        ito::DataObject m_refScaled;
+
         unsigned int GetBppFromPixelFormat( FlyCapture2::PixelFormat pixelFormat );
         bool GetPixelFormatFromVideoMode( FlyCapture2::VideoMode mode, bool stippled, FlyCapture2::PixelFormat* pixFormat);
         bool GetResolutionFromVideoMode( FlyCapture2::VideoMode mode, int &sizeX, int &sizeY);
