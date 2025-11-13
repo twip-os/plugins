@@ -23,7 +23,7 @@
 #include "dockWidgetSerialIO.h"
 
 #include "math.h"
-#include <qtime>
+#include <QTime>
 
 //-------------------------------------------------------------------------------------------------------------------------------------------------
 char getHexChar(int i)
